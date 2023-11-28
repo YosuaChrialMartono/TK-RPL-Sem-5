@@ -16,11 +16,8 @@ def register(request):
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            if user.role == '1':
-                Mentor.objects.create(user=user)
-            elif user.role == '2':
-                Mentee.objects.create(user=user)
-            return redirect('login')
+
+            return redirect('authuser:login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
@@ -32,7 +29,7 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('index')
+            return redirect('authuser:register') # Ganti nanti
         else:
             messages.error(request, 'Username atau password salah')
 
