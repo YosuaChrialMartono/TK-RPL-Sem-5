@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
 from .models import User, Mentor, Mentee
 
 
@@ -17,3 +18,7 @@ class CustomUserCreationForm(UserCreationForm):
             elif user.role == '2':
                 Mentee.objects.create(user=user)
         return user
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Username')
+    password = forms.CharField(widget=forms.PasswordInput())

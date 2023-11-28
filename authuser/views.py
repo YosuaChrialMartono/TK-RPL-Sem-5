@@ -1,20 +1,10 @@
-from django.shortcuts import render
-
-# Create your views here.
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import CustomUserCreationForm
-from .models import User, Mentor, Mentee
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import Group
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import get_user_model
+from django.shortcuts import render, redirect
+
+from .forms import CustomUserCreationForm, LoginForm
+from .models import Mentor, Mentee
 
 User = get_user_model()
 
@@ -34,3 +24,19 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
+
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            messages.error(request, 'Username atau password salah')
+
+    else:
+        form = LoginForm()
+
+    return render(request, 'login.html', {'form': form})
