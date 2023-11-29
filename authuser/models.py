@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin, UserManager
 from django.db import models
+from PIL import Image
 
 class CustomUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -9,6 +10,12 @@ class CustomUserManager(UserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self.db)
+        if self.profile_picture:
+            img = Image.open(self.profile_picture.path)
+
+            max_size = (300, 300)
+            img.thumbnail(max_size)
+            img.save(self.profile_picture.path)
 
         return user
     
@@ -43,6 +50,8 @@ class User(AbstractUser, PermissionsMixin):
 
     bio = models.TextField(blank=True, null=True)
 
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'
@@ -52,6 +61,9 @@ class User(AbstractUser, PermissionsMixin):
     class Meta:
         verbose_name = 'user'
         verbose_name_plural = 'users'
+ 
+    def get_id(self):
+        return self.id
 
     def get_full_name(self):
         return self.username
@@ -64,6 +76,10 @@ class User(AbstractUser, PermissionsMixin):
     
     def get_bio(self):
         return self.bio
+
+    def get_email(self):
+        return self.email
+
     
 class Mentor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
