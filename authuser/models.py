@@ -69,7 +69,6 @@ class Mentor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     verification_status = models.BooleanField(default=False)
     verification_document = models.CharField(max_length=255)
-    # classes_taught = models.ManyToManyField('Class', related_name='mentors') TODO: uncomment this when Class model is created
 
 class Mentee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
