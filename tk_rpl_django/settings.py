@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authuser',
+    'mentor',
 ]
 
 AUTH_USER_MODEL = 'authuser.User'
