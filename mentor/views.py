@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .decorators import mentor_required
 from django.db import DatabaseError
@@ -18,6 +18,7 @@ def create_kelas(request):
             try:
                 form.save()
                 # Redirect after successful save
+                return redirect('mentor:my_kelas')
             except DatabaseError:
                 form.add_error(None, 'Failed to save data to the database.')
     else:

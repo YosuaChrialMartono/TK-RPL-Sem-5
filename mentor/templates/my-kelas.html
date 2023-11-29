@@ -8,7 +8,7 @@
                 <h4 class='text-2xl'>Rp {{ kelas.harga_kelas }}</h4>
             </div>
             <div>
-                <span class='text-xl mr-5'>{{ kelas.mentor_kelas.user }}</span>
+                <span class='text-xl mr-5'>{{ kelas.mentor_kelas.user }} {% if kelas.mentor_kelas.verification_status %}✔{% endif %}</span>
                 <span class='text-xl'>{{ kelas.tanggal_kelas }} </span>
             </div>
             
