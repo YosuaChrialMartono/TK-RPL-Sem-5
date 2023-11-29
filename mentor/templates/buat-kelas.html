@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <meta name="Register" content="User Registration Page">
+{% endblock %}
+
+{% block content %}
+    <h1 class='text-xl'>Buat Kelas</h1>
+    <form method="post" action="{% url 'mentor:create_kelas' %}">
+    {% csrf_token %}
+
+    <!-- Display all form errors -->
+
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {{ field.errors }}
+        </div>
+    {% endfor %}
+
+    <!-- Display non-field form errors -->
+    {% if form.non_field_errors %}
+        <div class="form-group">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <button type="submit">Submit</button>
+    
+</form>
+{% endblock %}
+
