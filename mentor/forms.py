@@ -6,6 +6,12 @@ class KelasForm(forms.ModelForm):
     class Meta:
         model = Kelas
         fields = ['judul_kelas', 'tanggal_kelas', 'harga_kelas', 'mentor_kelas']
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(KelasForm, self).__init__(*args, **kwargs)
+        if self.user:
+            self.fields['mentor_kelas'].initial = self.user.mentor
 
     def clean_judul_kelas(self):
         judul_kelas = self.cleaned_data.get('judul_kelas')
@@ -29,6 +35,6 @@ class KelasForm(forms.ModelForm):
 
     def clean_mentor_kelas(self):
         mentor_kelas = self.cleaned_data.get('mentor_kelas')
-        if not mentor_kelas:
-            raise ValidationError('Mentor kelas is required.')
+        if not isinstance(mentor_kelas, Mentor):
+            raise ValidationError('Mentor kelas must be a Mentor instance.')
         return mentor_kelas
