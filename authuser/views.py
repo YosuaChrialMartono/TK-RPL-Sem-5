@@ -1,3 +1,42 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import get_user_model
+from django.shortcuts import render, redirect
 
-# Create your views here.
+from .forms import CustomUserCreationForm, LoginForm
+from .models import Mentor, Mentee
+
+User = get_user_model()
+
+def index(request):
+    return render(request, 'index.html')
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            return redirect('authuser:login')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'register.html', {'form': form})
+
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('authuser:index') # Ganti nanti
+        else:
+            messages.error(request, 'Username atau password salah')
+
+    else:
+        form = LoginForm()
+
+    return render(request, 'login.html', {'form': form})
+
+def logout_user(request):
+    logout(request)
+    return redirect('authuser:login')

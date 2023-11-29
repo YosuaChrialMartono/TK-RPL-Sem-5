@@ -33,9 +33,8 @@ class User(AbstractUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
 
     role_choices = [
-    ('1', 'Admin'),
-    ('2', 'Mentor'),
-    ('3', 'Mentee'),
+    ('1', 'Mentor'),
+    ('2', 'Mentee'),
     ]
     role = models.CharField(max_length=1, choices=role_choices, default='3')
 

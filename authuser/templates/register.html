@@ -1,0 +1,23 @@
+{%  extends 'base.html' %}
+
+{% block meta %}
+    <meta name="Register" content="User Registration Page">
+{% endblock %}
+
+{% block content %}
+    <h1>My page</h1>
+    <form method="post" action="{% url 'authuser:register' %}">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {{ field.errors }}
+        </div>
+    {% endfor %}
+
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
+
