@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .decorators import mentor_required
 from django.db import DatabaseError
 from .forms import KelasForm
+from .models import Kelas
 # Create your views here.
 
 @mentor_required(login_url='authuser:login')
@@ -23,3 +24,11 @@ def create_kelas(request):
         form = KelasForm()
 
     return render(request, 'buat-kelas.html', {'form': form})
+
+@mentor_required(login_url='authuser:login')
+def my_kelas(request):
+    kelas = Kelas.objects.filter(mentor_kelas=request.user.mentor)
+    context = {
+        'kelas_saya': kelas
+    }
+    return render(request, 'my-kelas.html', context)

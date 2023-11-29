@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for kelas in kelas_saya %}
+        <div class='border border-black rounded-md my-2 mx-3 p-4'>
+            <div class='flex my-2 justify-between'>
+                <h3 class='text-4xl'>{{ kelas.judul_kelas }}</h3>
+                <h4 class='text-2xl'>Rp {{ kelas.harga_kelas }}</h4>
+            </div>
+            <div>
+                <span class='text-xl mr-5'>{{ kelas.mentor_kelas.user }}</span>
+                <span class='text-xl'>{{ kelas.tanggal_kelas }} </span>
+            </div>
+            
+            <p>{{ kelas.deskripsi }}</p>
+        </div>
+    {% endfor %}
+    <button class='fixed bottom-4 right-4 bg-green-500 text-white p-2 rounded-full hover:bg-green-700'>Add Kelas</button>
+
+{% endblock %}
