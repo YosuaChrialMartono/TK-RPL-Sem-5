@@ -1,17 +1,33 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Kelas, Mentor
+import datetime
 
 class KelasForm(forms.ModelForm):
     class Meta:
         model = Kelas
-        fields = ['judul_kelas', 'tanggal_kelas', 'harga_kelas', 'mentor_kelas']
+        fields = ['judul_kelas', 'tanggal_kelas', 'harga_kelas']
+        widgets = {
+            'tanggal_kelas': forms.DateInput(attrs={'type': 'date'})
+        }
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(KelasForm, self).__init__(*args, **kwargs)
-        if self.user:
-            self.fields['mentor_kelas'].initial = self.user.mentor
+    
+    def save(self, commit=True):
+        kelas = super(KelasForm, self).save(commit=False)
+        if self.user and isinstance(self.user.mentor, Mentor):
+            kelas.mentor_kelas = self.user.mentor
+        if commit:
+            kelas.save()
+        return kelas
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.user is None or not hasattr(self.user, 'mentor') or not isinstance(self.user.mentor, Mentor):
+            raise ValidationError('The logged in user must be a mentor.')
+        return cleaned_data
 
     def clean_judul_kelas(self):
         judul_kelas = self.cleaned_data.get('judul_kelas')
@@ -32,9 +48,3 @@ class KelasForm(forms.ModelForm):
         if harga_kelas < 0:
             raise ValidationError('Harga kelas cannot be negative.')
         return harga_kelas
-
-    def clean_mentor_kelas(self):
-        mentor_kelas = self.cleaned_data.get('mentor_kelas')
-        if not isinstance(mentor_kelas, Mentor):
-            raise ValidationError('Mentor kelas must be a Mentor instance.')
-        return mentor_kelas

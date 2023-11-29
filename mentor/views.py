@@ -9,9 +9,10 @@ from .forms import KelasForm
 def index(request):
     return HttpResponse("Hello, world. You're at the mentor index.")
 
+@mentor_required(login_url='authuser:login')
 def create_kelas(request):
     if request.method == 'POST':
-        form = KelasForm(request.POST)
+        form = KelasForm(request.POST, user=request.user)
         if form.is_valid():
             try:
                 form.save()
@@ -21,4 +22,4 @@ def create_kelas(request):
     else:
         form = KelasForm()
 
-    return render(request, 'your_template.html', {'form': form})
+    return render(request, 'buat-kelas.html', {'form': form})
