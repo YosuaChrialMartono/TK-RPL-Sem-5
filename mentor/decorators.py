@@ -8,7 +8,7 @@ def mentor_required(login_url='login'):
         def _wrapped_view(request, *args, **kwargs):
             if not request.user.is_authenticated:
                 return redirect(login_url)
-            elif request.user.role != '1':
+            elif request.user.role != '1' and not request.user.is_superuser:
                 return HttpResponseForbidden()
             return view_func(request, *args, **kwargs)
         return _wrapped_view
