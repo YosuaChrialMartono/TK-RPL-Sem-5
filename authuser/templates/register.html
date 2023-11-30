@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1>My page</h1>
-    <form method="post" action="{% url 'authuser:register' %}">
+    <form method="post" action="{% url 'authuser:register' %}" enctype="multipart/form-data">
     {% csrf_token %}
 
     {% for field in form %}

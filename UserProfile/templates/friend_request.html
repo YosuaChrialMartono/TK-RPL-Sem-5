@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Friend Request Form{% endblock %}
+
+{% block content %}
+
+<div class="w-[418px] h-[415px] flex-col justify-start items-start gap-[25px] inline-flex">
+    <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Friend Request Form</div>
+    <form method="post" action="{% url 'UserProfile:send_friend_request' username=username %}">
+        {% csrf_token %}
+    
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+    
+        <button type="submit">Submit</button>
+    </form>
+
+</div>
+
+
+{% endblock %}

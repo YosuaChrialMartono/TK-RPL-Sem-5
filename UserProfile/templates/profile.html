@@ -8,26 +8,59 @@
     <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Username</div>
     <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ username }}</div>
     <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Profile Picture</div>
-    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal"><img src="{{ profile_picture.url }}" alt="Profile Picture" class="w-[200px] h-[200px] rounded-[10px]"></div>
+    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">
+        <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" class="w-[200px] h-[200px] rounded-[10px]">
+    </div>
     <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Email</div>
-    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ email }}</div>
+    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ user_profile.email }}</div>
     <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Role</div>
     <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ role }}</div>
     <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Friend Count</div>
     <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ friend_count }}</div>
     <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Bio</div>
-    <div class="w-[418px] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ bio }}</div>
+    <div class="w-[418px] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ user_profile.bio }}</div>
 
     {% if is_same_person %}
     <div class="flex flex-row justify-center items-center gap-[25px]">
-        <a href="/profile/edit" class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Edit Profile</a>
-    
+        <a href="/user/edit" class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Edit Profile</a>
+        {% for friend_request in friend_requests %}
+            <div class="w-[336px] h-11 px-3 py-2 rounded-md border border-black border-opacity-50 justify-start items-center gap-2.5 inline-flex">
+                <div class="grow shrink basis-0 h-5 text-black text-sm font-normal font-sans leading-tight">{{ friend_request.user }}</div>
+                <div class="p-1 rounded-md border border-black justify-start items-center gap-2.5 flex">
+                    <div class="text-black text-sm font-normal font-sans leading-tight">
+                        <a href= "{% url 'UserProfile:accept_friend_request' username=friend_request.user %}" class="text-black text-sm font-normal font-sans leading-tight">Accept</a>
+                    </div>
+                </div>
+                <div class="p-1 rounded-md border border-black justify-start items-center gap-2.5 flex">
+                    <a href= "{% url 'UserProfile:reject_friend_request' username=friend_request.user %}" class="text-black text-sm font-normal font-sans leading-tight">Reject</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     {% endif %}
 
-    {% if is_authenticated and not is_same_person%}
-
-    <div class="flex flex-row justify-center items-center gap-[25px]">
-        <a href="/profile/friend" class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Add Friend</a>
+    {% if is_authenticated and not is_same_person and not is_friend and not friend_request_exists %}
+    
+    <div class="w-[396px] h-[210px] p-[18px] rounded-[11px] border border-black flex-col justify-start items-start gap-6 inline-flex">
+        <div class="w-[336px] text-black text-xl font-medium font-sans leading-normal">Friend Request</div>
+        <div class="h-[60px] px-3 flex-col justify-center items-start gap-1 flex">
+            <form method="post" action="{% url 'UserProfile:send_friend_request' username=username %}">
+                {% csrf_token %}
+            
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                
+                <div class="grow shrink basis-0 px-3 py-2.5 bg-black rounded-lg flex-col justify-center items-center inline-flex">
+                    <button class="text-white text-base font-medium font-sans leading-snug" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     {% endif %}
 
