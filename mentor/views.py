@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .decorators import mentor_required
 from django.db import DatabaseError
 from .forms import KelasForm
+from .models import Kelas
 # Create your views here.
 
 @mentor_required(login_url='authuser:login')
@@ -17,9 +18,18 @@ def create_kelas(request):
             try:
                 form.save()
                 # Redirect after successful save
+                return redirect('mentor:my_kelas')
             except DatabaseError:
                 form.add_error(None, 'Failed to save data to the database.')
     else:
         form = KelasForm()
 
     return render(request, 'buat-kelas.html', {'form': form})
+
+@mentor_required(login_url='authuser:login')
+def my_kelas(request):
+    kelas = Kelas.objects.filter(mentor_kelas=request.user.mentor)
+    context = {
+        'kelas_saya': kelas
+    }
+    return render(request, 'my-kelas.html', context)
