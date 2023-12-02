@@ -1,6 +1,9 @@
+import time
+
+from PIL import Image
 from django.shortcuts import redirect, render
 from UserProfile.decorators import user_required, friend_request_recipient
-from UserProfile.forms import FriendRequestForm
+from UserProfile.forms import FriendRequestForm, EditProfileForm
 from authuser.models import User
 from .models import friendRequest
 from django.db import models
@@ -50,6 +53,40 @@ def view_profile(request, username):
     }
 
     return render(request, 'profile.html', context)
+
+def view_profile_edit(request, username):
+    form = EditProfileForm()
+
+    context = {
+        'form': form,
+        'username': username
+    }
+
+    return render(request, 'edit_profile_page.html', context)
+
+def profile_edit(request, username):
+    user_profile = User.objects.get(username=username)
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_profile.bio = form.cleaned_data['bio']
+            profile_picture = form.cleaned_data['profile_picture']
+            if profile_picture:
+                profile_picture_path = 'media/profile_pictures/'+ time.strftime("%Y%m%d-%H%M%S") + profile_picture.name
+                img = Image.open(profile_picture)
+
+                if img.mode == 'RGBA':
+                    img = img.convert('RGB')
+
+                max_size = (300, 300)
+
+                img.save(profile_picture_path, 'JPEG')
+                user_profile.profile_picture = profile_picture_path
+
+            user_profile.save()
+            return redirect('UserProfile:view_profile', username)
+
 
 @user_required(login_url='authuser:login')
 @friend_request_recipient(login_url='authuser:login')

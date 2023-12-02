@@ -1,12 +1,9 @@
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
 
-{% block meta %}
-    <meta name="Register" content="User Registration Page">
-{% endblock %}
 
 {% block content %}
-    <h1>Register</h1>
-    <form method="post" action="{% url 'authuser:register' %}" enctype="multipart/form-data">
+    <h1>Profile Edit</h1>
+    <form method="post" action="{% url 'UserProfile:profile_edit' username=username %}"  enctype="multipart/form-data">
     {% csrf_token %}
 
     {% for field in form %}
@@ -20,4 +17,3 @@
     <button type="submit">Submit</button>
 </form>
 {% endblock %}
-
