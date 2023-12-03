@@ -2,9 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .decorators import mentor_required
 from django.db import DatabaseError
-from .forms import KelasForm
-from .models import Kelas
-# Create your views here.
+from kelas.forms import KelasForm
+from kelas.models import Kelas
 
 @mentor_required(login_url='authuser:login')
 def index(request):
