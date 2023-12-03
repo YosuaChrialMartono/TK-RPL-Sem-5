@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Kelas, Mentor
+from authuser.models import Mentor
+from kelas.models import Kelas
 import datetime
 
 class KelasForm(forms.ModelForm):
