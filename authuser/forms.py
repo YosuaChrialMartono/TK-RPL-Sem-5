@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import User, Mentor, Mentee
-
+from .models import User
+from mentee.models import Mentee
+from mentor.models import Mentor
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

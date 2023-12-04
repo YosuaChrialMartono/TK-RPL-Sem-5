@@ -4,7 +4,8 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 
 from .forms import CustomUserCreationForm, LoginForm
-from .models import Mentor, Mentee
+from mentee.models import Mentee
+from mentee.models import Mentor
 
 User = get_user_model()
 
