@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'mentee',
     'UserProfile',
     'kelas',
+    'review',
 ]
 
 AUTH_USER_MODEL = 'authuser.User'
