@@ -1,13 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from authuser.models import Mentor
-from kelas.models import Kelas
+from mentor.models import Mentor
+from kelas.models import Kelas, FormJoinKelas
 import datetime
 
 class KelasForm(forms.ModelForm):
     class Meta:
         model = Kelas
-        fields = ['judul_kelas', 'tanggal_kelas', 'harga_kelas']
+        fields = ['judul_kelas', 'tanggal_kelas', 'harga_kelas', 'kapasitas_maksimal']
         widgets = {
             'tanggal_kelas': forms.DateInput(attrs={'type': 'date'})
         }
@@ -49,3 +49,16 @@ class KelasForm(forms.ModelForm):
         if harga_kelas < 0:
             raise ValidationError('Harga kelas cannot be negative.')
         return harga_kelas
+    
+    def clean_kapasitas_kelas(self):
+        kapasitas = self.cleaned_data.get('kapasitas_maksimal')
+        if kapasitas <= 0:
+            raise ValidationError('Kapasitas kelas minimal 1 orang.')
+        return kapasitas
+
+class PembayaranForm(forms.ModelForm):
+    class Meta:
+        model = FormJoinKelas
+        fields = ['url_bukti_pembayaran']
+
+    bukti_pembayaran = forms.URLField(label='URL Bukti Pembayaran')

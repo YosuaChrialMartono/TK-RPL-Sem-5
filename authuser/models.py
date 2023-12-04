@@ -79,13 +79,3 @@ class User(AbstractUser, PermissionsMixin):
 
     def get_email(self):
         return self.email
-
-    
-class Mentor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    verification_status = models.BooleanField(default=False)
-    verification_document = models.CharField(max_length=255)
-
-class Mentee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    # enrolled_classes = models.ManyToManyField('Class', related_name='mentees') TODO: uncomment this when Class model is created
