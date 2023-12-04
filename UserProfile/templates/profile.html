@@ -3,6 +3,13 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }} text-green"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
 <div class="w-[418px] h-[415px] flex-col justify-start items-start gap-[25px] inline-flex">
     <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Username</div>

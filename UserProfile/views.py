@@ -7,6 +7,7 @@ from UserProfile.forms import FriendRequestForm, EditProfileForm
 from authuser.models import User
 from .models import friendRequest
 from django.db import models
+from django.contrib import messages
 
 
 def check_friend_request_exists(user, friend):
@@ -132,6 +133,9 @@ def send_friend_request(request, username):
                 return redirect('UserProfile:view_profile', username)
             friend_request = form.save(commit=True)
             friend_request.save()
+
+            messages.success(request, f"Friend request sent to {form.friend.username} successfully!")
+
     else:
         form = FriendRequestForm()
     return redirect('UserProfile:view_profile', username)
