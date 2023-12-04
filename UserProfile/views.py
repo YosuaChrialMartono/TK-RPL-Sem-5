@@ -79,6 +79,10 @@ def profile_edit(request, username):
             user_profile.bio = form.cleaned_data['bio']
             profile_picture = form.cleaned_data['profile_picture']
             if profile_picture:
+                # Delete old profile picture
+                if user_profile.profile_picture:
+                    user_profile.profile_picture.delete()
+
                 profile_picture_path = 'media/profile_pictures/' + time.strftime("%Y%m%d-%H%M%S") + profile_picture.name
                 img = Image.open(profile_picture)
 
