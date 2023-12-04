@@ -29,4 +29,8 @@
     </form>
 
     <p>Don't have an account? <a href="{% url 'authuser:register' %}">Register here</a></p>
+
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
 {% endblock %}

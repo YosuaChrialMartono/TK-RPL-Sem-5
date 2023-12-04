@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Semua Kelas</h1>
+
+    {% if semua_kelas %}
+        <ul>
+            {% for kelas in semua_kelas %}
+                <li>{{ kelas.judul_kelas }} - {{ kelas.mentor_kelas.user.username }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Tidak ada kelas yang tersedia.</p>
+    {% endif %}
+{% endblock %}
