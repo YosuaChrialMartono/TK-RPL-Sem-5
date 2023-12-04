@@ -11,6 +11,7 @@ urlpatterns = [
     path('user/', include('UserProfile.urls')),
     path('kelas/', include('kelas.urls')),
     path('mentee/', include('mentee.urls')),
+    path('review/', include('review.urls')),
 ]
 
 if settings.DEBUG:
