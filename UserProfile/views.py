@@ -8,6 +8,7 @@ from authuser.models import User
 from .models import friendRequest
 from django.db import models
 
+
 def check_friend_request_exists(user, friend):
     is_friend = friendRequest.objects.filter(
         (models.Q(user=user, friend=friend) | models.Q(user=friend, friend=user)),
@@ -20,6 +21,7 @@ def check_friend_request_exists(user, friend):
     ).exists()
 
     return is_friend, friend_request_exists
+
 
 def view_profile(request, username):
     user_profile = User.objects.get(username=username)
@@ -36,8 +38,10 @@ def view_profile(request, username):
         friend_requests = friendRequest.objects.filter(friend=user_profile.get_id(), accepted_status=False)
 
     user_profile_role = user_profile.get_role_display()
-    friend_count = friendRequest.objects.filter(user=user_profile.get_id(), accepted_status=True, is_rejected=False).count()
-    friend_count = friend_count + friendRequest.objects.filter(friend=user_profile.get_id(), accepted_status=True, is_rejected=False).count()
+    friend_count = friendRequest.objects.filter(user=user_profile.get_id(), accepted_status=True,
+                                                is_rejected=False).count()
+    friend_count = friend_count + friendRequest.objects.filter(friend=user_profile.get_id(), accepted_status=True,
+                                                               is_rejected=False).count()
 
     context = {
         'username': username,
@@ -48,11 +52,12 @@ def view_profile(request, username):
         'is_authenticated': is_authenticated,
         'is_friend': is_friend,
         'friend_request_exists': friend_request_exists,
-        'friend_requests' : friend_requests,
+        'friend_requests': friend_requests,
         'form': form
     }
 
     return render(request, 'profile.html', context)
+
 
 def view_profile_edit(request, username):
     form = EditProfileForm()
@@ -64,6 +69,7 @@ def view_profile_edit(request, username):
 
     return render(request, 'edit_profile_page.html', context)
 
+
 def profile_edit(request, username):
     user_profile = User.objects.get(username=username)
 
@@ -73,7 +79,7 @@ def profile_edit(request, username):
             user_profile.bio = form.cleaned_data['bio']
             profile_picture = form.cleaned_data['profile_picture']
             if profile_picture:
-                profile_picture_path = 'media/profile_pictures/'+ time.strftime("%Y%m%d-%H%M%S") + profile_picture.name
+                profile_picture_path = 'media/profile_pictures/' + time.strftime("%Y%m%d-%H%M%S") + profile_picture.name
                 img = Image.open(profile_picture)
 
                 if img.mode == 'RGBA':
@@ -93,7 +99,7 @@ def profile_edit(request, username):
 def accept_friend_request(request, username):
     user_username = request.user.username
     user = User.objects.get(username=username)
-    friend_request = friendRequest.objects.filter(friend= request.user, user= user, accepted_status=False)
+    friend_request = friendRequest.objects.filter(friend=request.user, user=user, accepted_status=False)
     if friend_request is not None:
         request.user.accept_friend_request(friend_request)
     else:
@@ -103,9 +109,9 @@ def accept_friend_request(request, username):
 @user_required(login_url='authuser:login')
 @friend_request_recipient(login_url='authuser:login')
 def reject_friend_request(request, username):
-    user_username = request.user.username    
+    user_username = request.user.username
     user = User.objects.get(username=username)
-    friend_request = friendRequest.objects.filter(friend= request.user, user= user, accepted_status=False)
+    friend_request = friendRequest.objects.filter(friend=request.user, user=user, accepted_status=False)
     if friend_request is not None:
         request.user.reject_friend_request(friend_request)
     else:
@@ -130,4 +136,3 @@ def send_friend_request(request, username):
     else:
         form = FriendRequestForm()
     return redirect('UserProfile:view_profile', username)
-
