@@ -15,10 +15,9 @@ class CustomUserCreationForm(UserCreationForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         profile_picture = self.cleaned_data.get('profile_picture')
-
         if commit:
-            if profile_picture:
-                profile_picture_path = 'media/profile_pictures/'+ time.strftime("%Y%m%d-%H%M%S") + profile_picture.name 
+            if profile_picture != '' and profile_picture is not None:
+                profile_picture_path = 'profile_pictures/'+ time.strftime("%Y%m%d-%H%M%S") + profile_picture.name 
                 img = Image.open(profile_picture)
                 
                 if img.mode == 'RGBA':
@@ -27,6 +26,12 @@ class CustomUserCreationForm(UserCreationForm):
                 max_size = (300, 300)
                 
                 img.save(profile_picture_path, 'JPEG')
+                user.save()
+                if user.role == '1':
+                    Mentor.objects.create(user=user)
+                elif user.role == '2':
+                    Mentee.objects.create(user=user)
+            elif profile_picture == '' or profile_picture is None:
                 user.save()
                 if user.role == '1':
                     Mentor.objects.create(user=user)

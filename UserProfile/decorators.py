@@ -26,3 +26,14 @@ def friend_request_recipient(login_url='login'):
             return HttpResponseForbidden()
         return _wrapped_view
     return decorator
+
+def is_current_user(login_url='login'):
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            username = kwargs['username']
+            if request.user.username == username:
+                return view_func(request, *args, **kwargs)
+            return HttpResponseForbidden()
+        return _wrapped_view
+    return decorator
