@@ -16,6 +16,7 @@ class FormJoinKelas(models.Model):
     kelas = models.ForeignKey(Kelas, on_delete=models.CASCADE)
     url_bukti_pembayaran = models.URLField()
     STATUS_PEMBAYARAN_CHOICES = [
+        ('Menunggu Pembayaran', 'Menunggu Pembayaran'),
         ('Menunggu Konfirmasi', 'Menunggu Konfirmasi'),
         ('Pembayaran Diterima', 'Pembayaran Diterima'),
         ('Pembayaran Ditolak', 'Pembayaran Ditolak'),
@@ -24,6 +25,6 @@ class FormJoinKelas(models.Model):
     status_pembayaran = models.CharField(
         max_length=20,
         choices=STATUS_PEMBAYARAN_CHOICES,
-        default='Menunggu Konfirmasi',
+        default='Menunggu Pembayaran',
     )
     tanggal_pendaftaran = models.DateTimeField(auto_now_add=True)

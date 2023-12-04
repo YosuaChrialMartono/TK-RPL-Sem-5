@@ -14,7 +14,6 @@ def mentee_home(request):
 def show_all_kelas(request):
     classes = kelas_func.all_kelas()
 
-    # Kirim data kelas ke template
     return render(request, 'show_all_kelas.html', {'semua_kelas': classes})
 
 @mentee_required(login_url='authuser:login')
@@ -34,4 +33,4 @@ def join_kelas(request):
 
     response = kelas_func.join_kelas(request, mentee, kelas)
 
-    return HttpResponse("success")
+    return response
