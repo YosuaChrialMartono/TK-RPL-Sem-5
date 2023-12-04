@@ -9,7 +9,8 @@ urlpatterns = [
     path('auth/', include('authuser.urls')),
     path('mentor/', include('mentor.urls')),
     path('user/', include('UserProfile.urls')),
-
+    path('kelas/', include('kelas.urls')),
+    path('mentee/', include('mentee.urls')),
 ]
 
 if settings.DEBUG:

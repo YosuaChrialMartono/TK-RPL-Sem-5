@@ -27,7 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authuser',
     'mentor',
+    'mentee',
     'UserProfile',
+    'kelas',
 ]
 
 AUTH_USER_MODEL = 'authuser.User'

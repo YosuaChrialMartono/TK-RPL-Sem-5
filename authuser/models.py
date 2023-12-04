@@ -10,7 +10,7 @@ class CustomUserManager(UserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self.db)
-        if self.profile_picture:
+        if self.profile_picture is not None:
             img = Image.open(self.profile_picture.path)
 
             max_size = (300, 300)
@@ -80,22 +80,3 @@ class User(AbstractUser, PermissionsMixin):
 
     def get_email(self):
         return self.email
-
-    def accept_friend_request(self, friend_request):
-        friend_request_instance = friend_request.get()
-        friend_request_instance.accepted_status = True
-        friend_request_instance.save()
-
-    def reject_friend_request(self, friend_request):
-        friend_request_instance = friend_request.get()
-        friend_request_instance.is_rejected = True
-        friend_request_instance.accepted_status = True
-    
-class Mentor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    verification_status = models.BooleanField(default=False)
-    verification_document = models.CharField(max_length=255)
-
-class Mentee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    # enrolled_classes = models.ManyToManyField('Class', related_name='mentees') TODO: uncomment this when Class model is created

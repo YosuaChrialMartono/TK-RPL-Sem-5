@@ -1,6 +1,4 @@
 from django.contrib import admin
+from .models import Mentor
 
-# Register your models here.
-
-from .models import Kelas
-admin.site.register(Kelas)
+admin.site.register(Mentor)

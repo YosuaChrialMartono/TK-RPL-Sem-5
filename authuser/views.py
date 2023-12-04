@@ -4,7 +4,8 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 
 from .forms import CustomUserCreationForm, LoginForm
-from .models import Mentor, Mentee
+from mentee.models import Mentee
+from mentor.models import Mentor
 
 User = get_user_model()
 
@@ -22,20 +23,21 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def login_user(request):
+    form = LoginForm()
+    error_message = None 
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('authuser:index') # Ganti nanti
+            return redirect('authuser:index')  # Ganti nanti
         else:
-            messages.error(request, 'Username atau password salah')
+            error_message = 'Username atau password salah'
+            messages.error(request, error_message)
 
-    else:
-        form = LoginForm()
-
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'form': form, 'error_message': error_message})
 
 def logout_user(request):
     logout(request)
