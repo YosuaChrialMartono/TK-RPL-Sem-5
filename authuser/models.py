@@ -42,6 +42,7 @@ class User(AbstractUser, PermissionsMixin):
     role_choices = [
     ('1', 'Mentor'),
     ('2', 'Mentee'),
+    ('3', 'Admin'),
     ]
     role = models.CharField(max_length=1, choices=role_choices, default='3')
 
@@ -50,7 +51,7 @@ class User(AbstractUser, PermissionsMixin):
 
     bio = models.TextField(blank=True, null=True)
 
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, default='profile_pictures/default.jpg')
 
     objects = CustomUserManager()
 

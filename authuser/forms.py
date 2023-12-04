@@ -1,5 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from PIL import Image
+import time
 from .models import User
 from mentee.models import Mentee
 from mentor.models import Mentor
@@ -7,17 +9,29 @@ from mentor.models import Mentor
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = UserCreationForm.Meta.fields + ('email', 'role', 'bio')
+        fields = UserCreationForm.Meta.fields + ('email', 'role', 'bio', 'profile_picture')
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        profile_picture = self.cleaned_data.get('profile_picture')
+
         if commit:
-            user.save()
-            if user.role == '1':
-                Mentor.objects.create(user=user)
-            elif user.role == '2':
-                Mentee.objects.create(user=user)
+            if profile_picture:
+                profile_picture_path = 'media/profile_pictures/'+ time.strftime("%Y%m%d-%H%M%S") + profile_picture.name 
+                img = Image.open(profile_picture)
+                
+                if img.mode == 'RGBA':
+                    img = img.convert('RGB')
+                
+                max_size = (300, 300)
+                
+                img.save(profile_picture_path, 'JPEG')
+                user.save()
+                if user.role == '1':
+                    Mentor.objects.create(user=user)
+                elif user.role == '2':
+                    Mentee.objects.create(user=user)
         return user
 
 class LoginForm(forms.Form):
