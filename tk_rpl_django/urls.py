@@ -12,6 +12,7 @@ urlpatterns = [
     path('kelas/', include('kelas.urls')),
     path('mentee/', include('mentee.urls')),
     path('review/', include('review.urls')),
+    path('adminreview/', include('adminreview.urls')),
 ]
 
 if settings.DEBUG:

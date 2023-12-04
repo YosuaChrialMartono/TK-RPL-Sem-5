@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'UserProfile',
     'kelas',
     'review',
+    'adminreview',
 ]
 
 AUTH_USER_MODEL = 'authuser.User'
