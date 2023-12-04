@@ -22,7 +22,7 @@
 
     {% if is_same_person %}
     <div class="flex flex-row justify-center items-center gap-[25px]">
-        <a href="{% url 'UserProfile:profile_edit' username=username %}" class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Edit Profile</a>
+        <a href="{% url 'UserProfile:view_profile_edit' username=username %}" class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Edit Profile</a>
         {% for friend_request in friend_requests %}
             <div class="w-[336px] h-11 px-3 py-2 rounded-md border border-black border-opacity-50 justify-start items-center gap-2.5 inline-flex">
                 <div class="grow shrink basis-0 h-5 text-black text-sm font-normal font-sans leading-tight">{{ friend_request.user }}</div>
