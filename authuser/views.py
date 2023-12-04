@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 from .forms import CustomUserCreationForm, LoginForm
 from mentee.models import Mentee
-from mentee.models import Mentor
+from mentor.models import Mentor
 
 User = get_user_model()
 
