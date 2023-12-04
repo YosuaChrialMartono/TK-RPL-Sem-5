@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Form Pendaftaran Mentee</h2>
+
+{% for form in forms %}
+    <div>
+        <h3>{{ form.kelas.judul_kelas }}</h3>
+        <p>Status Pembayaran: {{ form.status_pembayaran }}</p>
+        <p>Tanggal Pendaftaran: {{ form.tanggal_pendaftaran }}</p>
+        {% if form.url_bukti_pembayaran %}
+            <p><a href="{{ form.url_bukti_pembayaran }}" target="_blank">Bukti Pembayaran</a></p>
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}
