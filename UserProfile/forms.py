@@ -20,5 +20,5 @@ class FriendRequestForm(forms.Form):
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = User 
-        fields = ['bio', 'profile_picture']
+        fields = ['bio']
 

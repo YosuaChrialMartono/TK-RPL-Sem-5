@@ -2,7 +2,7 @@ import time
 
 from PIL import Image
 from django.shortcuts import redirect, render
-from UserProfile.decorators import user_required, friend_request_recipient
+from UserProfile.decorators import is_current_user, user_required, friend_request_recipient
 from UserProfile.forms import FriendRequestForm, EditProfileForm
 from authuser.models import User
 from .models import friendRequest
@@ -43,9 +43,19 @@ def view_profile(request, username):
     friend_count = friend_count + friendRequest.objects.filter(friend=user_profile.get_id(), accepted_status=True,
                                                                is_rejected=False).count()
 
+    profile_picture = user_profile.profile_picture
+    print(profile_picture)
+    if profile_picture is not None and profile_picture != '':
+        profile_picture = profile_picture.url
+        print(profile_picture)
+    else:
+        user_profile.profile_picture = 'profile_pictures/default.jpg'
+        user_profile.save()
+
     context = {
         'username': username,
         'user_profile': user_profile,
+        'profile_picture': profile_picture,
         'role': user_profile_role,
         'friend_count': friend_count,
         'is_same_person': is_same_person,
@@ -58,7 +68,8 @@ def view_profile(request, username):
 
     return render(request, 'profile.html', context)
 
-
+@user_required(login_url='authuser:login')
+@is_current_user(login_url='authuser:login')
 def view_profile_edit(request, username):
     form = EditProfileForm()
 
@@ -69,7 +80,8 @@ def view_profile_edit(request, username):
 
     return render(request, 'edit_profile_page.html', context)
 
-
+@user_required(login_url='authuser:login')
+@is_current_user(login_url='authuser:login')
 def profile_edit(request, username):
     user_profile = User.objects.get(username=username)
 
@@ -77,23 +89,6 @@ def profile_edit(request, username):
         form = EditProfileForm(request.POST, request.FILES)
         if form.is_valid():
             user_profile.bio = form.cleaned_data['bio']
-            profile_picture = form.cleaned_data['profile_picture']
-            if profile_picture:
-                # Delete old profile picture
-                if user_profile.profile_picture:
-                    user_profile.profile_picture.delete()
-
-                profile_picture_path = 'media/profile_pictures/' + time.strftime("%Y%m%d-%H%M%S") + profile_picture.name
-                img = Image.open(profile_picture)
-
-                if img.mode == 'RGBA':
-                    img = img.convert('RGB')
-
-                max_size = (300, 300)
-
-                img.save(profile_picture_path, 'JPEG')
-                user_profile.profile_picture = profile_picture_path
-
             user_profile.save()
             return redirect('UserProfile:view_profile', username)
 
