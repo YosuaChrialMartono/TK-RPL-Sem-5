@@ -17,6 +17,8 @@ def register(request):
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
+            messages.success(request, "Akun berhasil dibuat!")
+
             return redirect('authuser:login')
     else:
         form = CustomUserCreationForm()
@@ -32,6 +34,7 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, "Berhasil login!")
             return redirect('authuser:index')  # Ganti nanti
         else:
             error_message = 'Username atau password salah'
@@ -41,4 +44,5 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
+    messages.success(request, "Berhasil logout!")
     return redirect('authuser:login')
