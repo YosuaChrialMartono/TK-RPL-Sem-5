@@ -9,17 +9,34 @@
 
     {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body class="w-full">
 
-<nav class="bg-gray-800 p-4">
-    <div class="container mx-auto">
-        <a class="text-white" href="#">SIMentor</a>
+    <div class="w-full h-[68px] bg-white shadow flex-col justify-start items-start inline-flex">
+        <div class="w-full h-[68px] px-4 py-3 justify-between items-center inline-flex">
+            <div class="text-black text-xl font-medium font-sans leading-normal">SiMentor</div>
+            <div class="justify-start items-center gap-2 flex">
+
+                {% if user.is_authenticated %}
+
+                {% if user.role == 'mentor' %}
+                <a href="{% url 'UserProfile:view_profile' username=request.user.username %}" 
+                class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[5px] rounded-[10px]">Daftar kelas saya</a>
+                <!-- masukkan link daftar kelas -->
+                {% endif %}
+
+                <a href="{% url 'UserProfile:view_profile' username=request.user.username %}"
+            class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[5px] rounded-[10px]">Hey, {{ request.user.username }}</a>
+                {% else %}
+                <div class="pl-2 pr-1 py-2.5 rounded border border-black justify-start items-center gap-0.5 flex">
+                    <div class="text-black text-xl font-normal font-['Roboto'] leading-none">Login</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-</nav>
+    
 
-<div class="container mx-auto my-8">
     {% block content %}{% endblock %}
-</div>
 
 {% block extra_body %}{% endblock %}
 

@@ -90,3 +90,4 @@ class User(AbstractUser, PermissionsMixin):
         friend_request_instance = friend_request.get()
         friend_request_instance.is_rejected = True
         friend_request_instance.accepted_status = True
+        friend_request_instance.save()
