@@ -4,73 +4,60 @@
 
 {% block content %}
 {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }} text-green"{% endif %}>{{ message }}</li>
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }} text-green" {% endif %}>{{ message }}</li>
         {% endfor %}
-    </ul>
+</ul>
 {% endif %}
 
-<div class="w-[418px] h-[415px] flex-col justify-start items-start gap-[25px] inline-flex">
-    <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Username</div>
-    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ username }}</div>
-    <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Profile Picture</div>
-    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">
-        <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" class="w-[200px] h-[200px] rounded-[10px]">
+<div class="w-[1167px] h-[415px] justify-start items-start gap-16 inline-flex">
+    <div class="flex-col justify-start items-center gap-[22px] inline-flex">
+        <div class="w-[285px] h-[285px] p-[35.62px] justify-center items-center inline-flex">
+            <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture"
+                class="w-[200px] h-[200px] rounded-[10px]">
+        </div>
+        <div class="text-black text-4xl font-medium font-sans leading-normal">{{ username }}</div>
+        <a href="{% url 'UserProfile:view_profile_edit' username=username %}"
+            class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Edit Bio</a>
     </div>
-    <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Email</div>
-    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ user_profile.email }}</div>
-    <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Role</div>
-    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ role }}</div>
-    <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Friend Count</div>
-    <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ friend_count }}</div>
-    <div class="text-black text-4xl font-medium font-sans leading-normal" id="profile-section">Bio</div>
-    <div class="w-[418px] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ user_profile.bio }}</div>
+    <div class="flex-col justify-start items-start gap-[25px] inline-flex">
+        <div class="text-black text-4xl font-medium font-sans leading-normal">Email</div>
+        <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ user_profile.email }}</div>
+        <div class="text-black text-4xl font-medium font-sans leading-normal">Role</div>
+        <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ role }}</div>
+        <div class="text-black text-4xl font-medium font-sans leading-normal">Friend Count</div>
+        <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ friend_count }}</div>
+        <div class="text-black text-4xl font-medium font-sans leading-normal">Bio</div>
+        <div class="w-[418px] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">
+            {{ user_profile.bio }}</div>
+    </div>
 
     {% if is_same_person %}
-    <div class="flex flex-row justify-center items-center gap-[25px]">
-        <a href="{% url 'UserProfile:view_profile_edit' username=username %}" class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Edit Profile</a>
+    <div class="flex-col justify-start items-start gap-[30px] inline-flex">
+        <div class="text-black text-4xl font-medium font-sans leading-normal">Friend Requests</div>
+
+        {% if friend_requests %}
         {% for friend_request in friend_requests %}
-            <div class="w-[336px] h-11 px-3 py-2 rounded-md border border-black border-opacity-50 justify-start items-center gap-2.5 inline-flex">
-                <div class="grow shrink basis-0 h-5 text-black text-sm font-normal font-sans leading-tight">{{ friend_request.user }}</div>
-                <div class="p-1 rounded-md border border-black justify-start items-center gap-2.5 flex">
-                    <div class="text-black text-sm font-normal font-sans leading-tight">
-                        <a href= "{% url 'UserProfile:accept_friend_request' username=friend_request.user %}" class="text-black text-sm font-normal font-sans leading-tight">Accept</a>
-                    </div>
-                </div>
-                <div class="p-1 rounded-md border border-black justify-start items-center gap-2.5 flex">
-                    <a href= "{% url 'UserProfile:reject_friend_request' username=friend_request.user %}" class="text-black text-sm font-normal font-sans leading-tight">Reject</a>
-                </div>
+
+        <div
+            class="w-[336px] px-3 py-2 rounded-md border border-black border-opacity-50 justify-start items-center gap-2.5 inline-flex">
+            <div class="grow shrink basis-0 h-5 text-black text-sm font-normal font-sans leading-tight">{{ friend_request.user }}
             </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    {% if is_authenticated and not is_same_person and not is_friend and not friend_request_exists %}
-    
-    <div class="w-[396px] h-[210px] p-[18px] rounded-[11px] border border-black flex-col justify-start items-start gap-6 inline-flex">
-        <div class="w-[336px] text-black text-xl font-medium font-sans leading-normal">Friend Request</div>
-        <div class="h-[60px] px-3 flex-col justify-center items-start gap-1 flex">
-            <form method="post" action="{% url 'UserProfile:send_friend_request' username=username %}">
-                {% csrf_token %}
-            
-                {% for field in form %}
-                    <div class="form-group">
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {{ field.errors }}
-                    </div>
-                {% endfor %}
-                
-                <div class="grow shrink basis-0 px-3 py-2.5 bg-black rounded-lg flex-col justify-center items-center inline-flex">
-                    <button class="text-white text-base font-medium font-sans leading-snug" type="submit">Submit</button>
-                </div>
-            </form>
+            <a href="{% url 'UserProfile:accept_friend_request' username=friend_request.user %}"
+                    class="bg-[#FFD600] text-black text-opacity-50 font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Accept</a>
+            <a href="{% url 'UserProfile:reject_friend_request' username=friend_request.user %}"
+                    class="bg-[#FFD600] text-black text-opacity-50 font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Reject</a>
         </div>
-    </div>
 
+        {% endfor %}
+        {% else %}
+
+        <div class="left-[860px] top-[125px] text-black text-2xl font-medium font-sans leading-normal">No friend request</div>
+
+        {% endif %}
     {% endif %}
-
+    </div>
 </div>
 
 
