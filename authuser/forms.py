@@ -1,7 +1,10 @@
+import os
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from PIL import Image
 import time
+
+from tk_rpl_django import settings
 from .models import User
 from mentee.models import Mentee
 from mentor.models import Mentor
@@ -17,7 +20,9 @@ class CustomUserCreationForm(UserCreationForm):
         profile_picture = self.cleaned_data.get('profile_picture')
         if commit:
             if profile_picture != '' and profile_picture is not None:
-                profile_picture_path = 'profile_pictures/'+ time.strftime("%Y%m%d-%H%M%S") + profile_picture.name 
+                filename = time.strftime("%Y%m%d-%H%M%S") + profile_picture.name 
+                profile_picture_path = os.path.join(settings.MEDIA_ROOT, 'profile_pictures', filename)
+
                 img = Image.open(profile_picture)
                 
                 if img.mode == 'RGBA':
