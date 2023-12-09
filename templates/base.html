@@ -72,8 +72,8 @@
 
                 {% if user.is_authenticated %}
 
-                {% if user.role == 'mentor' %}
-                <a href="{% url 'UserProfile:view_profile' username=request.user.username %}" 
+                {% if user.role == '1' %}
+                <a href="{% url 'mentor:my_kelas' %}" 
                 class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[5px] rounded-[10px] hover:shadow-xl">Daftar kelas saya</a>
                 <!-- masukkan link daftar kelas -->
                 {% endif %}
