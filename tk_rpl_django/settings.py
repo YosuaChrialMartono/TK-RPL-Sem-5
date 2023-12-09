@@ -1,4 +1,7 @@
 from pathlib import Path
+import environ
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,6 +19,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 env = environ.Env()
+
+PRODUCTION = os.getenv('DATABASE_URL') is not None
 
 
 # Application definition
