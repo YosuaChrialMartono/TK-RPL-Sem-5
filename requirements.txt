@@ -5,3 +5,15 @@ psycopg2-binary==2.9.9
 sqlparse==0.4.4
 typing_extensions==4.8.0
 tzdata==2023.3
+certifi==2022.6.15
+charset-normalizer==2.1.1
+dj-database-url==1.0.0
+idna==3.3
+requests==2.28.1
+six==1.16.0
+typed-ast==1.5.4
+urllib3==1.26.11
+whitenoise==6.2.0
+wrapt==1.14.1
+django-environ
+django-cors-headers
