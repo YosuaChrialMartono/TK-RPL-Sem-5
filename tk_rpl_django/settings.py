@@ -18,6 +18,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ["https://tk-rpl-sem-5-dev-ztbc.3.us-1.fl0.io"]
+CSRF_ALLOWED_ORIGINS = ["https://tk-rpl-sem-5-dev-ztbc.3.us-1.fl0.io"]
+CORS_ORIGINS_WHITELIST = ["https://tk-rpl-sem-5-dev-ztbc.3.us-1.fl0.io"]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+
 env = environ.Env()
 
 PRODUCTION = os.getenv('DATABASE_URL') is not None
