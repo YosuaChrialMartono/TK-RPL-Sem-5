@@ -74,15 +74,15 @@
 
                 {% if user.role == '1' %}
                 <a href="{% url 'mentor:my_kelas' %}" 
-                class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[5px] rounded-[10px] hover:shadow-xl">Daftar kelas saya</a>
+                class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Daftar kelas saya</a>
                 <!-- masukkan link daftar kelas -->
                 {% endif %}
 
                 <a href="{% url 'UserProfile:view_profile' username=request.user.username %}"
-            class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[5px] rounded-[10px] hover:shadow-xl">Hey, {{ request.user.username }}</a>
+            class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Hey, {{ request.user.username }}</a>
 
             <a href="{% url 'authuser:logout' %}"
-            class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[5px] rounded-[10px] hover:shadow-xl">Logout</a>
+            class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Logout</a>
                 {% else %}
                 <a href="{% url 'authuser:login' %}"
                 class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[5px] rounded-[10px]">Login</a>
