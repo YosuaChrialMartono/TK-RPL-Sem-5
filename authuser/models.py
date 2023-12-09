@@ -42,6 +42,7 @@ class User(AbstractUser, PermissionsMixin):
     role_choices = [
     ('1', 'Mentor'),
     ('2', 'Mentee'),
+    ('3', 'Admin'),
     ]
     role = models.CharField(max_length=1, choices=role_choices, default='3')
 
@@ -79,3 +80,14 @@ class User(AbstractUser, PermissionsMixin):
 
     def get_email(self):
         return self.email
+
+    def accept_friend_request(self, friend_request):
+        friend_request_instance = friend_request.get()
+        friend_request_instance.accepted_status = True
+        friend_request_instance.save()
+
+    def reject_friend_request(self, friend_request):
+        friend_request_instance = friend_request.get()
+        friend_request_instance.is_rejected = True
+        friend_request_instance.accepted_status = True
+        friend_request_instance.save()
