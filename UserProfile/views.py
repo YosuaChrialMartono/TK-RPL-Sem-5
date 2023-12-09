@@ -28,7 +28,11 @@ def view_profile(request, username):
     user_profile = User.objects.get(username=username)
     is_authenticated = request.user.is_authenticated
     is_same_person = request.user.username == username if is_authenticated else False
-    is_friend, friend_request_exists = check_friend_request_exists(request.user, user_profile)
+    if is_authenticated:
+        is_friend, friend_request_exists = check_friend_request_exists(request.user, user_profile)
+    else:
+        is_friend = False
+        friend_request_exists = False
 
     form = None
     if is_authenticated and not is_same_person and not is_friend and not friend_request_exists:
@@ -50,7 +54,7 @@ def view_profile(request, username):
         profile_picture = profile_picture.url
         print(profile_picture)
     else:
-        user_profile.profile_picture = 'profile_pictures/default.jpg'
+        user_profile.profile_picture = None
         user_profile.save()
 
     context = {

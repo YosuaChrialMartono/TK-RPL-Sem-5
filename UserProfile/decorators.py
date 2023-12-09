@@ -20,8 +20,8 @@ def friend_request_recipient(login_url='login'):
         def _wrapped_view(request, *args, **kwargs):
             friend_username = kwargs['username']
             friend = User.objects.get(username=friend_username)
-            friend_request = friendRequest.objects.get(user=friend)
-            if friend_request is not None and friend_request.friend == request.user:
+            friend_request = friendRequest.objects.filter(user=friend, friend=request.user)
+            if friend_request is not None and friend_request[0].friend == request.user:
                 return view_func(request, *args, **kwargs)
             return HttpResponseForbidden()
         return _wrapped_view

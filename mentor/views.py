@@ -30,7 +30,7 @@ def create_kelas(request):
 def my_kelas(request):
     kelas = Kelas.objects.filter(mentor_kelas=request.user.mentor)
     context = {
-        'kelas_saya': kelas
+        'kelas_saya': kelas,
     }
     return render(request, 'my-kelas.html', context)
 
