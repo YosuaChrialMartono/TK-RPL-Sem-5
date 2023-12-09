@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('authuser', '0003_user_profile_picture'),
+        ('mentor', '0003_initial'),
     ]
 
     operations = [
