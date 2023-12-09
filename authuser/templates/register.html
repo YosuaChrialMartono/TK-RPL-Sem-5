@@ -29,7 +29,7 @@
                     </svg>
                 </div>
                 <input type="email" id="id_email" name="email"
-                    class="bg-gray-50 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                    class="bg-gray-50 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" autofocus
                     placeholder="name@flowbite.com" required maxlength="254">
             </div>
             <div id="email-error" class="text-red-500 text-sm mt-1"></div>
@@ -47,7 +47,7 @@
                     </svg>
                 </div>
                 <input type="text" id="id_username" maxlength="50" autocapitalize="none" autocomplete="username"
-                    autofocus required name="username"
+                    required name="username"
                     class="bg-gray-50 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                     placeholder="username">
             </div>
@@ -244,7 +244,7 @@
                 console.log('Success:', data);
                 if (data.success) {
                     // Registration successful, redirect to login page
-                    window.location.href = '/user/login/';
+                    window.location.href = '/auth/login/';
                 } else {
                     // Display errors to the user
                     console.error('Registration failed:', data.errors);
