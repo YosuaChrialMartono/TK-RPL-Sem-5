@@ -10,6 +10,10 @@ def mentor_required(login_url='login'):
                 return redirect(login_url)
             elif request.user.role != '1':
                 return HttpResponseForbidden()
+            try:
+                request.user.mentor
+            except:
+                return HttpResponseForbidden()
             return view_func(request, *args, **kwargs)
         return _wrapped_view
     return decorator
