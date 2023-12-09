@@ -29,7 +29,7 @@ RUN python manage.py collectstatic --noinput --clear
 RUN python manage.py migrate
 
 # Create superuser
-RUN python manage.py shell -c “from django.contrib.auth.models import User; User.objects.create_superuser(‘admin’, ‘admin@example.com’, ‘admin’) if not User.objects.filter(username=‘admin’).exists() else None”
+RUN python manage.py shell -c “from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin') if not User.objects.filter(username='admin').exists() else None”
 
 # Run as non-root user
 RUN chown -R django:django /app
