@@ -22,7 +22,7 @@
       <div class="text-black text-4xl font-medium font-sans leading-normal">{{ username }}</div>
       {% if is_same_person %}
       <a href="{% url 'UserProfile:view_profile_edit' username=username %}"
-        class="bg-[#FFD600] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px] hover:shadow-xl">Edit
+        class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Edit
         Bio</a>
       {% endif %}
     </div>
@@ -36,7 +36,11 @@
       <div class="text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">{{ friend_count }}</div>
       <div class="text-black text-4xl font-medium font-sans leading-normal">Bio</div>
       {% if user_profile.bio == "" %}
+      {% if is_same_person %}
+      <div class="w-[418px] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">You have no bio</div>
+      {% else %}
       <div class="w-[418px] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">This user has no bio</div>
+      {% endif %}
       {% else %}
       <div class="w-[418px] text-black text-opacity-50 text-2xl font-medium font-sans leading-normal">
         {{ user_profile.bio }}
