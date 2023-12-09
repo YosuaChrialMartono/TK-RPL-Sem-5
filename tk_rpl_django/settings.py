@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'kelas',
     'review',
     'adminreview',
+    'main',
 ]
 
 AUTH_USER_MODEL = 'authuser.User'
