@@ -10,7 +10,7 @@ class CustomUserManager(UserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self.db)
-        if self.profile_picture is not None:
+        if user.profile_picture is not None:
             img = Image.open(self.profile_picture.path)
 
             max_size = (300, 300)
