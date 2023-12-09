@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for materi in materi_list %}
+        <div class='border border-black rounded-md my-2 mx-3 p-4'>
+            <h3 class='text-4xl'>{{ materi.judul_materi }}</h3>
+            <p>{{ materi.deskripsi }}</p>
+            <p>Status: {{ materi.status_persetujuan }}</p>
+            <a href="{% url 'adminreview:tinjau_materi' materi.id %}">Tinjau Materi</a>
+        </div>
+    {% endfor %}
+{% endblock %}

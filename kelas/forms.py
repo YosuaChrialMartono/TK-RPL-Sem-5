@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from mentee.models import Mentee
 from mentor.models import Mentor
 from kelas.models import Kelas, FormJoinKelas
 import datetime
@@ -60,5 +61,13 @@ class PembayaranForm(forms.ModelForm):
     class Meta:
         model = FormJoinKelas
         fields = ['url_bukti_pembayaran']
-
-    bukti_pembayaran = forms.URLField(label='URL Bukti Pembayaran')
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(PembayaranForm, self).__init__(*args, **kwargs)
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.user is None or not hasattr(self.user, 'mentee') or not isinstance(self.user.mentee, Mentee):
+            raise ValidationError('The logged in user must be a mentee.')
+        return cleaned_data
