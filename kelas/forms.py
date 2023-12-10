@@ -57,7 +57,7 @@ class KelasForm(forms.ModelForm):
 
     def clean_harga_kelas(self):
         harga_kelas = self.cleaned_data.get('harga_kelas')
-        if not harga_kelas:
+        if harga_kelas is None:
             raise ValidationError('Harga kelas is required.')
         if harga_kelas < 0:
             raise ValidationError('Harga kelas cannot be negative.')
