@@ -4,32 +4,88 @@
     <meta name="Register" content="User Registration Page">
 {% endblock %}
 
-{% block content %}
-    <h1 class='text-xl'>Buat Kelas</h1>
-    <form method="post" action="{% url 'mentor:create_kelas' %}">
-    {% csrf_token %}
-
-    <!-- Display all form errors -->
-
-    {% for field in form %}
-        <div class="form-group">
-            {{ field.label_tag }}
-            {{ field }}
-            {{ field.errors }}
-        </div>
-    {% endfor %}
-
-    <!-- Display non-field form errors -->
-    {% if form.non_field_errors %}
-        <div class="form-group">
-            {% for error in form.non_field_errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <button type="submit">Submit</button>
-    
-</form>
+{% block title %}
+    Create Kelas
 {% endblock %}
 
+{% block content %}
+    <div class="flex justify-center align-center w-screen h-fit mt-5">
+        <div class="flex-col p-3 h-fit w-3/12">
+            <h1 class='text-4xl text-black font-medium font-sans mb-3 self-center text-center'>Buat Kelas</h1>
+            <form method="post" action="{% url 'mentor:create_kelas' %}">
+                {% csrf_token %}
+
+                <!-- Display all form errors -->
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}"
+                               class="block mt-5 mb-2 text-sm font-medium text-gray-900 dark:text-black">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div class="text-red-600">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="flex mt-5 justify-between">
+                    <a href="{% url 'mentor:my_kelas' %}"
+                       class="text-black border border-black border-1 bg-white hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 hover:shadow-gray-90 hover:shadow-xl">Cancel</a>
+                    <button class='text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 hover:shadow-gray-90 hover:shadow-xl'
+                            type="submit" name="validate">Submit
+                    </button>
+                </div>
+
+                <!-- Add a modal that is a review and confirmation page of the form -->
+                {% if isValid %}
+                    <div id="default-modal" tabindex="-1" aria-hidden="true"
+                         class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <!-- Add a background overlay div with a semi-transparent black color -->
+                        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        <!-- Add a margin and a transform to the inner div to center it -->
+                        <div class="relative left-1/2 top-1/2 transform translate-x-[-50%] translate-y-[-50%] w-3/12">
+
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow bg-white p-5">
+                                <h2 class="text-2xl text-black font-medium font-sans mb-3 self-center text-center">
+                                    Review
+                                    and Confirm</h2>
+                                <p class="text-sm text-gray-900 dark:text-black mb-3 self-center text-center">Please
+                                    review
+                                    your input and confirm to create the kelas.</p>
+                                {% for field in form %}
+                                    <div class="form-group">
+                                        <label for="{{ field.id_for_label }}"
+                                               class="block mt-5 mb-2 text-sm font-medium text-gray-900 dark:text-black">{{ field.label }}</label>
+                                        <input readonly {{ field.as_widget }}
+                                    </div>
+                                {% endfor %}
+                                <div class="flex mt-5 justify-between">
+                                    <button class="text-black border border-black border-1 bg-white hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 hover:shadow-gray-90 hover:shadow-xl"
+                                            data-modal-target="default-modal" data-modal-toggle="default-modal"
+                                            type="button">Close
+                                    </button>
+                                    <button class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 hover:shadow-gray-90 hover:shadow-xl"
+                                            type="submit" name="submit-form">Confirm
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Add this script to open the modal immediately
+        document.addEventListener('DOMContentLoaded', function () {
+            const cancelButton = document.querySelector('[data-modal-toggle="default-modal"]');
+            const modal = document.getElementById('default-modal');
+            cancelButton.addEventListener('click', function () {
+                modal.classList.toggle('hidden');
+            });
+        });
+    </script>
+
+{% endblock %}
