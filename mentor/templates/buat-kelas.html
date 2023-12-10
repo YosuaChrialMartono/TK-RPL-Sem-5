@@ -4,32 +4,45 @@
     <meta name="Register" content="User Registration Page">
 {% endblock %}
 
+{% block title %}
+    Create Kelas
+{% endblock %}
+
 {% block content %}
-    <h1 class='text-xl'>Buat Kelas</h1>
-    <form method="post" action="{% url 'mentor:create_kelas' %}">
-    {% csrf_token %}
+    <div class="flex justify-center align-center w-screen h-screen mt-5">
+        <div class="flex-col border p-3 h-fit w-3/12">
+            <h1 class='text-4xl text-black font-medium font-sans mb-3 self-center text-center'>Buat Kelas</h1>
+            <form method="post" action="{% url 'mentor:create_kelas' %}">
+                {% csrf_token %}
 
-    <!-- Display all form errors -->
+                <!-- Display all form errors -->
 
-    {% for field in form %}
-        <div class="form-group">
-            {{ field.label_tag }}
-            {{ field }}
-            {{ field.errors }}
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}"
+                               class="block mt-5 mb-2 text-sm font-medium text-gray-900 dark:text-black">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div class="text-red-600">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <!-- Display non-field form errors -->
+                {% if form.non_field_errors %}
+                    <div class="form-group">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            <div class="flex mt-5 justify-between">
+                <a href="{% url 'mentor:my_kelas' %}" class="text-black border border-black border-1 bg-white hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 hover:shadow-gray-90 hover:shadow-xl">Cancel</a>
+                <button class='text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 hover:shadow-gray-90 hover:shadow-xl' type="submit">Submit</button>
+            </div>
+            </form>
         </div>
-    {% endfor %}
-
-    <!-- Display non-field form errors -->
-    {% if form.non_field_errors %}
-        <div class="form-group">
-            {% for error in form.non_field_errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <button type="submit">Submit</button>
-    
-</form>
+    </div>
 {% endblock %}
 
