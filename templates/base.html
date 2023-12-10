@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}Your Django App{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}Your Django App{% endblock %}</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    {% block extra_head %}{% endblock %}
+  {% block extra_head %}{% endblock %}
 </head>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.addEventListener('click', function (event) {
-        // Check if the click is outside the toast messages
-        if (!event.target.closest('#toast-success')) {
-          // Remove the toast messages
-          var messages = document.getElementById('messages');
-          if (messages) {
-            messages.innerHTML = '';
-          }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('click', function (event) {
+      // Check if the click is outside the toast messages
+      if (!event.target.closest('#toast-success')) {
+        // Remove the toast messages
+        var messages = document.getElementById('messages');
+        if (messages) {
+          messages.innerHTML = '';
         }
-      });
+      }
     });
-  </script>
+  });
+</script>
 
 <body class="w-full">
-    {% if messages %}
-    <ul id="messages" class="fixed top-0 right-0 m-4">
-      {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
-            <div id="toast-success" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-                {% if message.tags == 'error' %}
+  {% if messages %}
+  <ul id="messages" class="fixed top-0 right-0 m-4">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+      <div id="toast-success"
+        class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+        role="alert">
+        {% if message.tags == 'error' %}
 
                 <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -63,7 +66,7 @@
             </div>    
         </li>
       {% endfor %}
-    </ul>
+  </ul>
   {% endif %}
     <div class="w-full h-[68px] bg-white shadow flex-col justify-start items-start inline-flex">
         <div class="w-full h-[68px] px-4 py-3 justify-between items-center inline-flex">
@@ -78,8 +81,9 @@
                 <!-- masukkan link daftar kelas -->
                 {% endif %}
 
-                <a href="{% url 'UserProfile:view_profile' username=request.user.username %}"
-            class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Hey, {{ request.user.username }}</a>
+        <a href="{% url 'UserProfile:view_profile' username=request.user.username %}"
+          class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Hey,
+          {{ request.user.username }}</a>
 
             <a href="{% url 'authuser:logout' %}"
             class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Logout</a>
@@ -92,9 +96,10 @@
     </div>
     
 
-    {% block content %}{% endblock %}
+  {% block content %}{% endblock %}
 
-{% block extra_body %}{% endblock %}
+  {% block extra_body %}{% endblock %}
 
 </body>
+
 </html>
