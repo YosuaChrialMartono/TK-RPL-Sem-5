@@ -13,7 +13,6 @@ def index(request):
 
 @mentor_required(login_url='authuser:login')
 def create_kelas(request):
-    is_valid = True
     if request.method == 'POST':
         form = KelasForm(request.POST, user=request.user)
         if form.is_valid() and 'submit-form' in request.POST:
@@ -23,12 +22,11 @@ def create_kelas(request):
                 messages.success(request, 'Kelas berhasil dibuat')
                 return redirect('mentor:my_kelas')
             except DatabaseError:
-                is_valid = False
                 messages.error(request, 'Failed to create kelas')
     else:
         form = KelasForm()
 
-    return render(request, 'buat-kelas.html', {'form': form, 'isValid': form.is_valid() and is_valid})
+    return render(request, 'buat-kelas.html', {'form': form, 'isValid': form.is_valid()})
 
 @mentor_required(login_url='authuser:login')
 def my_kelas(request):
