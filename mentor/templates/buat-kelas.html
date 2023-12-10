@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="flex justify-center align-center w-screen h-screen mt-5">
-        <div class="flex-col border p-3 h-fit w-3/12">
+    <div class="flex justify-center align-center w-screen h-fit mt-5">
+        <div class="flex-col p-3 h-fit w-3/12">
             <h1 class='text-4xl text-black font-medium font-sans mb-3 self-center text-center'>Buat Kelas</h1>
             <form method="post" action="{% url 'mentor:create_kelas' %}">
                 {% csrf_token %}
