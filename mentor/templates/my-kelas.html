@@ -1,20 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for kelas in kelas_saya %}
-        <div class='border border-black rounded-md my-2 mx-3 p-4'>
-            <div class='flex my-2 justify-between'>
-                <h3 class='text-4xl'>{{ kelas.judul_kelas }}</h3>
-                <h4 class='text-2xl'>Rp {{ kelas.harga_kelas }}</h4>
+<div class="w-full px-3 flex-col justify-center items-center gap-2 inline-flex m-4 p-4">
+    <div class="self-stretch justify-start items-start gap-2 inline-flex">
+        {% for kelas in kelas_saya %}
+        <div
+            class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center inline-flex">
+            <div class="self-stretch h-[100px] p-2 flex-col justify-start items-start gap-1 flex">
+                <div class="self-stretch h-6 text-black text-base font-medium font-sans leading-normal">
+                    {{ kelas.judul_kelas}}</div>
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">{{ kelas.tanggal_kelas }}</div>
+                {% if kelas.harga_kelas == 0 %}
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Free</div>
+                {% else %}
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Rp.{{ kelas.harga_kelas }}</div>
+                {% endif %}
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">{{ kelas.deskripsi }}
+                </div>
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Current student: {{ kelas.jumlah_mentee }} / {{ kelas.kapasitas_maksimal }}</div>
             </div>
-            <div>
-                <span class='text-xl mr-5'>{{ kelas.mentor_kelas.user }} {% if kelas.mentor_kelas.verification_status %}✔{% endif %}</span>
-                <span class='text-xl'>{{ kelas.tanggal_kelas }} </span>
-            </div>
-            
-            <p>{{ kelas.deskripsi }}</p>
         </div>
-    {% endfor %}
-    <a class='fixed bottom-4 right-4 bg-green-500 text-white p-2 rounded-full hover:bg-green-700' href="{% url 'mentor:create_kelas' %}">Add Kelas</a>
+        {% endfor %}
+    </div>
+</div>
+<a class='fixed bottom-4 right-4 bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300'
+    href="{% url 'mentor:create_kelas' %}">Add Kelas</a>
 
 {% endblock %}
