@@ -11,6 +11,9 @@ class Kelas(models.Model):
     jumlah_mentee = models.IntegerField(default=0)
     mentee_kelas = models.ManyToManyField(Mentee, related_name='kelas_diikuti', blank=True, default=None)
 
+    def get_mentee_usernames(self):
+        return [mentee.user.username for mentee in self.mentee_kelas.all()]
+
 class FormJoinKelas(models.Model):
     pendaftar = models.ForeignKey(Mentee, on_delete=models.CASCADE)
     kelas = models.ForeignKey(Kelas, on_delete=models.CASCADE)
