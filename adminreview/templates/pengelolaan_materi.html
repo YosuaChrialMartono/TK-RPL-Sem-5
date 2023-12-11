@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for materi in materi_list %}
-        <div class='border border-black rounded-md my-2 mx-3 p-4'>
-            <h3 class='text-4xl'>{{ materi.judul_materi }}</h3>
-            <p>{{ materi.deskripsi }}</p>
-            <p>Status: {{ materi.status_persetujuan }}</p>
-            <a href="{% url 'adminreview:tinjau_materi' materi.id %}">Tinjau Materi</a>
+    {% for kelas in list_kelas %}
+        <div class='max-w-md mx-auto border border-black rounded-md my-4 p-4'>
+            <h3 class='text-2xl font-semibold mb-2'>{{ kelas.judul_kelas }}</h3>
+            <hr class="my-2 border-t border-gray-300">
+            <p class="text-gray-700">Mentor: {{ kelas.mentor_kelas.user.username }}</p>
+            <a href="{% url 'adminreview:tinjau_kelas' kelas.id %}" class="block mt-4 bg-black text-white px-4 py-2 rounded-full text-center text-decoration-none hover:bg-gray-800 focus:outline-none focus:shadow-outline-gray active:bg-gray-800">
+                Review Class
+            </a>
         </div>
     {% endfor %}
 {% endblock %}

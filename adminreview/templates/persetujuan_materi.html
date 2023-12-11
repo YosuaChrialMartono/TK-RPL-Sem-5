@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="my-8">
+        <h2 class="text-3xl font-semibold mb-4">Material Details</h2>
+
+        <div class="border border-gray-300 rounded-md p-6 mb-8">
+            <p class="text-lg"><span class="font-semibold">Material Title:</span> {{ materi.judul_materi }}</p>
+            <p class="text-lg"><span class="font-semibold">Description:</span> {{ materi.deskripsi }}</p>
+            <p class="text-lg"><span class="font-semibold">Status:</span> {{ materi.status_persetujuan }}</p>
+            <p class="text-lg"><span class="font-semibold">Feedback:</span> {{ materi.feedback }}</p>
+        </div>
+
+        <h2 class="text-3xl font-semibold mb-4 mt-8">Manage Approval</h2>
+        <form method="post" action="" class="mb-8">
+            {% csrf_token %}
+            
+            <div class="mb-6">
+                <label for="{{ form.status_persetujuan.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.status_persetujuan.label }}
+                </label>
+                {{ form.status_persetujuan }}
+            </div>
+        
+            <div class="mb-6">
+                <label for="{{ form.feedback.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.feedback.label }}
+                </label>
+                {{ form.feedback }}
+            </div>
+        
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 focus:outline-none focus:shadow-outline-gray active:bg-gray-800">
+                Save Approval
+            </button>
+        </form>
+
+        <a href="{% url 'adminreview:tinjau_materi' kelas_id=materi.kelas.id %}" class="block bg-gray-800 text-white px-4 py-2 rounded-full text-center text-decoration-none hover:bg-gray-600 focus:outline-none focus:shadow-outline-gray active:bg-gray-600">
+            Back to Previous Page
+        </a>
+{% endblock %}
