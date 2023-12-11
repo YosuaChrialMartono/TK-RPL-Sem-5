@@ -30,11 +30,11 @@ def show_form_pendaftaran_by_formId(request):
 
 @mentee_required(login_url='authuser:login')
 def join_kelas(request):
-    judul_kelas = request.GET.get('kelas', '')
-    if judul_kelas == '':
+    id_kelas = request.GET.get('kelasid', '')
+    if id_kelas == '':
         return HttpResponseBadRequest('Tidak ada parameter nama kelas yang ingin diikuti')
-    
-    kelas = kelas_func.filter_kelas_by_judul(judul=judul_kelas)
+
+    kelas = kelas_func.get_kelas_by_id(idKelas=id_kelas)
     if kelas is None:
         return HttpResponseBadRequest('Kelas yang ingin diikuti tidak ada')
     
@@ -61,7 +61,7 @@ def add_bukti_pembayaran(request, idForm):
             form_pendaftaran.url_bukti_pembayaran = form.cleaned_data.get('url_bukti_pembayaran')
             form_pendaftaran.status_pembayaran = 'Menunggu Konfirmasi'
             form_pendaftaran.save()
-            return redirect(f'mentee:form_by_id', idForm=idForm)
+            return redirect(f'mentee:form_pendaftaran')
     else:
         form = PembayaranForm()
 

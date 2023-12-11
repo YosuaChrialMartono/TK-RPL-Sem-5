@@ -1,22 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="w-full px-20 py-4 grid gap-20" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr))">
-    {% for kelas in kelas_saya %}
-    <div class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center my-3">
-    <div class="self-stretch h-[150px] justify-start items-start">
-        <img src="https://picsum.photos/seed/simentor{{ kelas.judul_kelas }}/150">
-    </div>
-    <div class="self-stretch h-[100px] p-2 flex-col justify-start items-start gap-1 flex overflow-hidden hover:overflow-auto">
-        <div class="self-stretch h-6 text-black text-base font-medium font-sans leading-normal">
-            {{ kelas.judul_kelas}}</div>
-        <div class="text-black text-xs font-normal font-sans leading-none">{{ kelas.tanggal_kelas }}</div>
-        {% if kelas.harga_kelas == 0 %}
-        <div class="text-black text-xs font-normal font-sans leading-none">Free</div>
-        {% else %}
-        <div class="text-black text-xs font-normal font-sans leading-none">Rp.{{ kelas.harga_kelas }}</div>
-        {% endif %}
-        <div class="text-black text-xs font-normal font-sans leading-none">{{ kelas.deskripsi }}
+<div class="w-full px-3 flex-col justify-center items-center gap-2 inline-flex m-4 p-4">
+    <div class="self-stretch justify-start items-start gap-2 inline-flex">
+        {% for kelas in kelas_saya %}
+        <div
+            class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center inline-flex">
+            <div class="self-stretch h-[150px] justify-start items-start inline-flex">
+                <img src="https://picsum.photos/seed/simentor{{ kelas.judul_kelas }}/150">
+                </div>
+            <div class="self-stretch h-[100px] p-2 flex-col justify-start items-start gap-1 flex">
+                <div class="self-stretch h-6 text-black text-base font-medium font-sans leading-normal">
+                    {{ kelas.judul_kelas}}</div>
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">{{ kelas.tanggal_kelas }}</div>
+                {% if kelas.harga_kelas == 0 %}
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Free</div>
+                {% else %}
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Rp.{{ kelas.harga_kelas }}</div>
+                {% endif %}
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">{{ kelas.deskripsi }}
+                </div>
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Current student: {{ kelas.jumlah_mentee }} / {{ kelas.kapasitas_maksimal }}</div>
+            </div>
+            <button
+                class="bg-black rounded-[54px] px-3 py-2 drop-shadow-xl text-center text-white font-medium font-sans"
+                type="button"
+                id="{{ kelas.id }}-show-form"
+                onclick="window.location.href='{% url 'mentor:bukti_pembayaran' idKelas=kelas.id %}'">
+                Konfirmasi
+        </button>
+
         </div>
         <div class="text-black text-xs font-normal font-sans leading-none">Current student: {{ kelas.jumlah_mentee }} / {{ kelas.kapasitas_maksimal }}</div>
     </div>
