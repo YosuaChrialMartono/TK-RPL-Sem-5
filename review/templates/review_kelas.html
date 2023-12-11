@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load costums_filters %}
+
 
 {% block content %}
     <div class="w-full flex justify-center my-4">
@@ -9,29 +11,41 @@
                 </div>
                 <div class="flex-row justify-start items-start gap-2.5 flex">
                     {% if kelas_diikuti %}
-                        {% for kelas in kelas_diikuti %}
-                            <div class="px-3 py-[7px] rounded flex-col justify-center items-center gap-2 flex">
-                                <div class="self-stretch justify-start items-start gap-2 inline-flex">
-                                    <div class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center inline-flex">
-                                        <div class="self-stretch h-[150px] justify-start items-start inline-flex">
-                                            <img src="https://picsum.photos/seed/simentor{{ kelas.judul_kelas }}/150">
+                    {% for kelas in kelas_diikuti %}
+                        <div class="px-3 py-[7px] rounded flex-col justify-center items-center gap-2 flex">
+                            <div class="self-stretch justify-start items-start gap-2 inline-flex">
+                                <div class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center inline-flex">
+                                    <div class="self-stretch h-[150px] justify-start items-start inline-flex">
+                                        <img src="https://picsum.photos/seed/simentor{{ kelas.judul_kelas }}/150">
+                                    </div>
+                                    <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex">
+                                        <div class="self-stretch h-4 text-black text-base font-medium font-sans leading-normal">
+                                            {{ kelas.judul_kelas }}
                                         </div>
-                                        <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex">
-                                            <div class="self-stretch h-4 text-black text-base font-medium font-sans leading-normal">
-                                                {{ kelas.judul_kelas }}</div>
-                                            <div class="self-stretch text-black text-xs font-medium font-sans leading-normal">
-                                                oleh {{ kelas.mentor_kelas.user.username }}</div>
-                                            <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
-                                                {{ kelas.tanggal_kelas }}</div>
-                                                <button class="review-btn" data-kelasid="{{ kelas.id }}" onclick="openModal()">Review</button>
+                                        <div class="self-stretch text-black text-xs font-medium font-sans leading-normal">
+                                            oleh {{ kelas.mentor_kelas.user.username }}
                                         </div>
+                                        <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
+                                            {{ kelas.tanggal_kelas }}
+                                        </div>
+                                        <!-- Pass kelas_id to openModal function -->
+                                        <button class="review-btn" data-kelasid="{{ kelas.id }}" onclick="openModal('{{ kelas.id }}')">Review</button>
+                                
+                                        {% with reviews=kelas.review_kelas.all %}
+                                            {% if reviews %}
+                                                <p>Average Rating: {{ reviews|average_rating }}</p>
+                                            {% else %}
+                                                <p>No Ratings</p>
+                                            {% endif %}
+                                        {% endwith %}
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No Classes Reviewed Yet</p>
-                    {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No Classes Reviewed Yet</p>
+                {% endif %}
                 </div>
             </div>
         </div>
@@ -39,7 +53,6 @@
     <div id="reviewModal" class="fixed inset-0 z-50 hidden overflow-auto bg-gray-800 bg-opacity-50">
         <div class="flex items-center justify-center min-h-screen">
             <div class="bg-white p-6 rounded-lg w-full max-w-md text-center">
-                <!-- Your modal content goes here -->
                 <h2 class="text-2xl font-bold mb-4">Review Class</h2>
                 <form method="post" action="{% url 'review:review_kelas' %}" class="space-y-4" onsubmit="return validateForm()">
                     {% csrf_token %}
@@ -51,8 +64,9 @@
                     <!-- Review Text Area -->
                     <div class="flex items-center space-x-4">
                         <label for="review" class="text-sm font-semibold">Review:</label>
-                        <textarea name="review" id="review" rows="4" required></textarea>
+                        <textarea name="review_content" id="review" rows="3" columns="6" required></textarea>
                     </div>
+                    <input type="hidden" name="kelas_id" id="kelas_id_input">
                     <!-- Submit Button -->
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700">
                         Submit Review
@@ -97,10 +111,14 @@
     </div>
     
     <script>
-        function openModal() {
+        function openModal(kelasId) {
+            // Set the kelas_id in the form
+            document.getElementById('kelas_id_input').value = kelasId;
+
+            // Display the reviewModal
             document.getElementById('reviewModal').style.display = 'block';
         }
-    
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
@@ -114,7 +132,7 @@
         function validateForm() {
             // Validate fields before submission
             var rating = document.getElementById('rating').value;
-            var review = document.getElementById('review').value;
+            var review = document.getElementById('review_content').value;
     
             if (rating === '' || review === '' || rating.trim() === '' || review.trim() === '') {
                 // Show failedModal for empty or blank input
@@ -124,10 +142,12 @@
     
             // If validation passes, show the success modal
             document.getElementById('successModal').style.display = 'block';
+
+            // Reset elemen in modals
+            document.getElementById('reviewForm').reset();
     
             // Prevent the default form submission
             return false;
         }
     </script>
-    
 {% endblock %}
