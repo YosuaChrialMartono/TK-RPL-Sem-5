@@ -8,8 +8,8 @@ from mentee.decorators import mentee_required
 from mentor.decorators import mentor_required
 
 def get_kelas_by_id_func(request, idKelas):
-    kelas = get_
-    pass
+    kelas = get_kelas_by_id(idKelas)
+    return JsonResponse(serialize('json', [kelas]), safe=False)
 
 def get_all_kelas(request):
     judul_kelas = request.GET.get('kelas', '')

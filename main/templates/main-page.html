@@ -3,6 +3,61 @@
 {% block title %}SiMentor{% endblock %}
 
 {% block content %}
+<script>
+        async function getKelas(card_kelas_id) {
+            return fetch(`./kelas/${card_kelas_id}`).then((res) => res.json());
+        }
+        async function toggleModal(card_kelas_id){
+            let items = await getKelas(card_kelas_id);
+            items = JSON.parse(items);
+            const itemFields = items[0].fields;
+            const modal = document.getElementById('mentee-list-modal');
+            modal.classList.toggle('hidden');
+            const judulKelas = document.getElementById('modal-judul-kelas');
+            judulKelas.innerHTML = itemFields.judul_kelas;
+
+            const menteeDiv = document.getElementById('list-mentee-kelas');
+            menteeDiv.innerHTML = '';
+            const menteeList = itemFields.mentee_kelas;
+            for (let i = 0; i < menteeList.length; i++) {
+                menteeDiv.innerHTML += `
+                    <a href="./user/profile/${menteeList[i]}"
+                class="text-white text-2xl font-medium font-sans leading-normal py-[10px] rounded-full hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">
+                ${menteeList[i]}
+                    </a>
+                `
+            }
+        }
+
+        // Get the button and modal elements
+        var button = document.getElementById("{{ card_kelas.judul_kelas }}-mentee-list-button");
+        var modal = document.getElementById("mentee-list-modal");
+
+        // Attach click event to the button
+        button.addEventListener("click", function () {
+            // Show the modal
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+
+        });
+
+        // Close the modal when the close button is clicked
+        var closeButton = modal.querySelector("[data-modal-toggle]");
+        closeButton.addEventListener("click", function () {
+            modal.classList.remove("flex");
+            modal.classList.add("hidden");
+
+        });
+
+        // Close the modal when clicking outside the modal content
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.classList.remove("flex");
+                modal.classList.add("hidden");
+
+            }
+        });
+</script>
 <div class="w-full flex justify-center my-4" id="main-page">
     <div class="w-full h-[657px] flex-col items-center gap-[30px] inline-flex">
         <div class="flex-col justify-start items-center gap-[31px] flex">
@@ -169,7 +224,9 @@ class="hidden fixed top-0 right-0 bottom-0 left-0 flex items-center justify-cent
             <div>
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-toggle="mentee-list-modal">
+                    data-modal-toggle="mentee-list-modal"
+                    onclick="toggleModal(1)"
+                >
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -180,54 +237,13 @@ class="hidden fixed top-0 right-0 bottom-0 left-0 flex items-center justify-cent
                 </button>
             </div>
         </div>
-        <div class="">
-            <a href="{% url 'UserProfile:view_profile' username=mentee.user.username %}"
-                class="text-white text-2xl font-medium font-sans leading-normal py-[10px] rounded-full hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">
-                {{ mentee.user.username }}
-            </a>
+        <div id="list-mentee-kelas" class="">
+
         </div>
-        {% endfor %}
     </div>
 </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        function toggleModal(card_kelas_id){
-            const endpoint = 'http://127.0.0.1:8000/kelas/${card_kelas_id}';
-            fetch(endpoint)
-        }
-
-        // Get the button and modal elements
-        var button = document.getElementById("{{ card_kelas.judul_kelas }}-mentee-list-button");
-        var modal = document.getElementById("mentee-list-modal");
-
-        // Attach click event to the button
-        button.addEventListener("click", function () {
-            // Show the modal
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
-
-        });
-
-        // Close the modal when the close button is clicked
-        var closeButton = modal.querySelector("[data-modal-toggle]");
-        closeButton.addEventListener("click", function () {
-            modal.classList.remove("flex");
-            modal.classList.add("hidden");
-
-        });
-
-        // Close the modal when clicking outside the modal content
-        modal.addEventListener("click", function (event) {
-            if (event.target === modal) {
-                modal.classList.remove("flex");
-                modal.classList.add("hidden");
-
-            }
-        });
-    });
-</script>
 
 
 {% endblock %}
