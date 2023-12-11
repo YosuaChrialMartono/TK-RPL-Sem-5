@@ -22,6 +22,13 @@
                 </div>
                 <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Current student: {{ kelas.jumlah_mentee }} / {{ kelas.kapasitas_maksimal }}</div>
             </div>
+            <button
+                class="bg-black rounded-[54px] px-3 py-2 drop-shadow-xl text-center text-white font-medium font-sans"
+                type="button"
+                id="{{ kelas.id }}-show-form"
+                onclick="window.location.href='{% url 'mentor:bukti_pembayaran' idKelas=kelas.id %}'">
+                Konfirmasi
+        </button>
         </div>
         {% endfor %}
     </div>
