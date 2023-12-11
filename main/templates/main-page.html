@@ -125,15 +125,14 @@
                                         </button>
                                     </div>
                                 </div>
-                                <p class="text-gray-400 font-bold">
+                                <p class="font-bold">
                                     Mentee List: 
                                 </p>
                                 {% for mentee in card_kelas.mentee_kelas.all %}
                                 <div class="">
                                     <a href="{% url 'UserProfile:view_profile' username=request.user.username %}"
-                                        class="text-white text-md font-medium font-sans leading-normal py-[10px] rounded-full hover:shadow-gray-70 hover:bg-gray-900 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-gray-300 transition duration-300 ease-in-out transform hover:scale-105">
-                                        {{ mentee.user.username }}
-                                    </a>
+                                    class="text-white text-2xl font-medium font-sans leading-normal py-[10px] rounded-full hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">
+                                    {{ mentee.user.username }}</a>
                                 </div>
                                 {% endfor %}
                             </div>
