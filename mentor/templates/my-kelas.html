@@ -6,6 +6,9 @@
         {% for kelas in kelas_saya %}
         <div
             class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center inline-flex">
+            <div class="self-stretch h-[150px] justify-start items-start inline-flex">
+                <img src="https://picsum.photos/seed/simentor{{ kelas.judul_kelas }}/150">
+                </div>
             <div class="self-stretch h-[100px] p-2 flex-col justify-start items-start gap-1 flex">
                 <div class="self-stretch h-6 text-black text-base font-medium font-sans leading-normal">
                     {{ kelas.judul_kelas}}</div>
@@ -17,7 +20,7 @@
                 {% endif %}
                 <div class="self-stretch text-black text-xs font-normal font-sans leading-none">{{ kelas.deskripsi }}
                 </div>
-                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Current student: {{ kelas.jumlah_mentee }}</div>
+                <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Current student: {{ kelas.jumlah_mentee }} / {{ kelas.kapasitas_maksimal }}</div>
             </div>
         </div>
         {% endfor %}

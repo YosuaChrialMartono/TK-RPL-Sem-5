@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+
+{% block title %}SiMentor{% endblock %}
+
+{% block content %}
+<div class="w-full flex justify-center my-4" id="main-page">
+    <div class="w-full h-[657px] flex-col items-center gap-[30px] inline-flex">
+        <div class="flex-col justify-start items-center gap-[31px] flex">
+            <div class="w-[563px] h-[77px] relative">
+                <div
+                    class="w-[563px] h-[77px] left-0 top-0 absolute bg-black rounded-[54px] shadow-gray-90 drop-shadow-xl">
+                </div>
+                <div
+                    class="w-[520px] left-[21px] top-[15px] absolute text-center text-white text-[40px] font-bold font-sans leading-[48px]">
+                    Welcome to SiMentor</div>
+            </div>
+            {% if not user.is_authenticated %}
+            <div class="justify-start items-start gap-[50px] inline-flex">
+                <a href="{% url 'authuser:register' %}"
+                    class="w-[202px] h-[81px] relative rounded-[10px] border-4 border-black hover:bg-blue-100 text-center text-black text-[40px] font-bold font-sans leading-[48px] hover:shadow-gray-90  hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-gray-300 flex items-center justify-center">
+                    Join
+                    Us</a>
+
+                <a href="{% url 'authuser:login' %}"
+                    class="w-[202px] h-[81px] relative rounded-[10px] border-4 border-black hover:bg-blue-100 text-center text-black text-[40px] font-bold font-sans leading-[48px] hover:shadow-gray-90  hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-gray-300 flex items-center justify-center">
+                    login</a>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <div class="p-2.5 flex-col justify-start items-start gap-2.5 flex">
+            <div class="flex-col justify-start items-start gap-1 flex">
+                <div class="flex-col justify-start items-start gap-1.5 flex">
+                    <div class="text-black text-xl font-medium font-sans leading-normal">All Classes</div>
+                </div>
+                {% if kelas == None %}
+                <div class="text-black text-l font-medium font-sans leading-normal">There are currently no class
+                    available</div>
+                {% else %}
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-2.5">
+
+                    {% for card_kelas in kelas %}
+                    <div class="px-3 py-[7px] rounded flex-col justify-center items-center gap-2 flex">
+                        <div class="self-stretch justify-start items-start gap-2 inline-flex">
+                            <div
+                                class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center inline-flex">
+                                <div class="self-stretch h-[150px] justify-start items-start inline-flex">
+                                    <img src="https://picsum.photos/seed/simentor{{ card_kelas.judul_kelas }}/150">
+                                </div>
+                                <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex">
+                                    <div
+                                        class="self-stretch h-4 text-black text-base font-medium font-sans leading-normal">
+                                        {{ card_kelas.judul_kelas }}</div>
+                                    <div class="self-stretch text-black text-xs font-medium font-sans leading-normal">
+                                        oleh {{ card_kelas.mentor_kelas.user.username }}</div>
+                                    <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
+                                        {{ card_kelas.tanggal_kelas }}</div>
+                                    {% if card_kelas.harga_kelas == 0 %}
+                                    <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Free
+                                    </div>
+                                    {% else %}
+                                    <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
+                                        Rp.{{ card_kelas.harga_kelas }}</div>
+                                    {% endif %}
+                                    <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
+                                        Current student: {{ card_kelas.jumlah_mentee }} /
+                                        {{ card_kelas.kapasitas_maksimal }}</div>
+                                    <div class="self-stretch p-2 flex justify-center items-center">
+                                        <button
+                                            class="bg-black rounded-[54px] px-3 py-2 drop-shadow-xl text-center text-white font-medium font-sans"
+                                            type="button" id="{{ card_kelas.judul_kelas }}-mentee-list-button"
+                                            data-modal-target="{{ card_kelas.judul_kelas }}-mentee-list-modal"
+                                            data-modal-toggle="{{ card_kelas.judul_kelas }}-mentee-list-modal">
+                                            Mentee List
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div id="{{ card_kelas.judul_kelas }}-mentee-list-modal" tabindex="-1" aria-hidden="true"
+                            class="hidden fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center backdrop-blur-md">
+                            <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
+                                <!-- Modal content -->
+                                <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                                    <!-- Modal header -->
+                                    <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                                        <div class="text-lg text-gray-900 md:text-xl dark:text-white">
+                                            <h3 class="font-semibold ">
+                                                {{ card_kelas.judul_kelas }}
+                                            </h3>
+                                            <p class="font-bold">
+                                                $2999 <!-- Modify this line as needed -->
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <button type="button"
+                                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex dark:hover:bg-gray-600 dark:hover:text-white"
+                                                data-modal-toggle="{{ card_kelas.judul_kelas }}-mentee-list-modal">
+                                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
+                                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- Modal content -->
+                                    <!-- Add your content here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if is_mentor or is_mentee %}
+        <div class="p-2.5 flex-col justify-start items-start gap-2.5 flex">
+            <div class="flex-col justify-start items-start gap-1 flex">
+                <div class="flex-col justify-start items-start gap-1.5 flex">
+                    <div class="text-black text-xl font-medium font-sans leading-normal">Your Classes</div>
+                </div>
+                {% if kelas_saya == None %}
+                <div class="text-black text-l font-medium font-sans leading-normal">There are currently no class
+                    available</div>
+                {% else %}
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-2.5">
+                    {% for card_kelas in kelas_saya %}
+                    <div class="px-3 py-[7px] rounded flex-col justify-center items-center gap-2 flex">
+                        <div class="self-stretch justify-start items-start gap-2 inline-flex">
+                            <div
+                                class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center inline-flex">
+                                <div class="self-stretch h-[150px] justify-start items-start inline-flex">
+                                    <img src="https://picsum.photos/seed/simentor{{ card_kelas.judul_kelas }}/150">
+                                </div>
+                                <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex">
+                                    <div
+                                        class="self-stretch h-4 text-black text-base font-medium font-sans leading-normal">
+                                        {{ card_kelas.judul_kelas }}</div>
+                                    <div class="self-stretch text-black text-xs font-medium font-sans leading-normal">
+                                        oleh {{ card_kelas.mentor_kelas.user.username }}</div>
+                                    <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
+                                        {{ card_kelas.tanggal_kelas }}</div>
+                                    {% if card_kelas.harga_kelas == 0 %}
+                                    <div class="self-stretch text-black text-xs font-normal font-sans leading-none">Free
+                                    </div>
+                                    {% else %}
+                                    <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
+                                        Rp.{{ card_kelas.harga_kelas }}</div>
+                                    {% endif %}
+                                    <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
+                                        Current student: {{ card_kelas.jumlah_mentee }} /
+                                        {{ card_kelas.kapasitas_maksimal }}</div>
+                                    <div class="self-stretch p-2 flex justify-center items-center"><button
+                                            class="bg-black rounded-[54px] px-3 py-2 drop-shadow-xl text-center text-white font-medium font-sans"
+                                            type="button" id="{{card_kelas.judul_kelas}}-mentee-list-button-kelas-saya"
+                                            data-modal-target="{{card_kelas.judul_kelas}}-mentee-list-modal-kelas-saya"
+                                            data-modal-toggle="{{card_kelas.judul_kelas}}-mentee-list-modal-kelas-saya">Mentee
+                                            List</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div id="{{ card_kelas.judul_kelas }}-mentee-list-modal-kelas-saya" tabindex="-1" aria-hidden="true"
+                        class="hidden fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center backdrop-blur-md">
+                        <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
+                            <!-- Modal content -->
+                            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                                <!-- Modal header -->
+                                <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                                    <div class="text-lg text-gray-900 md:text-xl dark:text-white">
+                                        <h3 class="font-semibold ">
+                                            {{ card_kelas.judul_kelas }}
+                                        </h3>
+                                        <p class="font-bold">
+                                            $2999 <!-- Modify this line as needed -->
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <button type="button"
+                                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex dark:hover:bg-gray-600 dark:hover:text-white"
+                                            data-modal-toggle="{{ card_kelas.judul_kelas }}-mentee-list-modal-kelas-saya">
+                                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
+                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Modal content -->
+                                <!-- Add your content here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for card_kelas in kelas %}
+        // Get the button and modal elements
+        var button = document.getElementById("{{ card_kelas.judul_kelas }}-mentee-list-button");
+        var modal = document.getElementById("{{ card_kelas.judul_kelas }}-mentee-list-modal");
+
+        // Attach click event to the button
+        button.addEventListener("click", function () {
+            // Show the modal
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+
+        });
+
+        // Close the modal when the close button is clicked
+        var closeButton = modal.querySelector("[data-modal-toggle]");
+        closeButton.addEventListener("click", function () {
+            modal.classList.remove("flex");
+            modal.classList.add("hidden");
+
+        });
+
+        // Close the modal when clicking outside the modal content
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.classList.remove("flex");
+                modal.classList.add("hidden");
+
+            }
+        });
+        {% endfor %}
+
+        {% for card_kelas in kelas_saya %}
+        // Get the button and modal elements for user's classes
+        var userButton = document.getElementById("{{ card_kelas.judul_kelas }}-mentee-list-button-kelas-saya");
+        var userModal = document.getElementById("{{ card_kelas.judul_kelas }}-mentee-list-modal-kelas-saya");
+
+        // Attach click event to the button for user's classes
+        userButton.addEventListener("click", function () {
+            // Show the modal for user's classes
+            userModal.classList.remove("hidden");
+            userModal.classList.add("flex");
+
+        });
+
+        // Close the modal when the close button is clicked for user's classes
+        var userCloseButton = userModal.querySelector("[data-modal-toggle]");
+        userCloseButton.addEventListener("click", function () {
+            userModal.classList.remove("flex");
+            userModal.classList.add("hidden");
+
+        });
+
+        // Close the modal when clicking outside the modal content for user's classes
+        userModal.addEventListener("click", function (event) {
+            if (event.target === userModal) {
+                userModal.classList.remove("flex");
+                userModal.classList.add("hidden");
+
+            }
+        });
+        {% endfor %}
+    });
+</script>
+
+
+{% endblock %}

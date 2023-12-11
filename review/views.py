@@ -7,8 +7,8 @@ from review.decorators import mentee_required
 
 @mentee_required(login_url='authuser:login')
 def review_kelas(request):
-    mentee = request.user
-    reviews = Review.objects.filter(mentee=mentee)
+    mentee = request.user.id
+    reviews = Review.objects.filter(reviewer_id=mentee)
     
     # Ambil semua kelas yang pernah diikuti oleh mentee
     kelas_diikuti = Kelas.objects.filter(mentee_kelas=mentee)
@@ -26,5 +26,5 @@ def review_kelas(request):
     else:
         form = ReviewForm()
 
-    return render(request, 'review/review_kelas.html', 
+    return render(request, 'review_kelas.html', 
                   {'reviews': reviews, 'form': form, 'kelas_diikuti': kelas_diikuti})
