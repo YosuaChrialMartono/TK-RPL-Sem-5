@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse
 from .decorators import mentor_required
 from django.db import DatabaseError
@@ -14,17 +15,18 @@ def index(request):
 def create_kelas(request):
     if request.method == 'POST':
         form = KelasForm(request.POST, user=request.user)
-        if form.is_valid():
+        if form.is_valid() and 'submit-form' in request.POST:
             try:
                 form.save()
                 # Redirect after successful save
+                messages.success(request, 'Kelas berhasil dibuat')
                 return redirect('mentor:my_kelas')
             except DatabaseError:
-                form.add_error(None, 'Failed to save data to the database.')
+                messages.error(request, 'Failed to create kelas')
     else:
         form = KelasForm()
 
-    return render(request, 'buat-kelas.html', {'form': form})
+    return render(request, 'buat-kelas.html', {'form': form, 'isValid': form.is_valid()})
 
 @mentor_required(login_url='authuser:login')
 def my_kelas(request):
