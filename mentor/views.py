@@ -36,11 +36,7 @@ def my_kelas(request):
     }
     return render(request, 'my-kelas.html', context)
 
-@mentor_required(login_url='authuser:login')
-def show_bukti_pembayaran(request, idKelas):
-    forms = kelas_func.filter_form_by_kelas(idKelas)
 
-    return render(request, 'show-bukti-pembayaran.html', {'forms': forms})
 
 @mentor_required(login_url='authuser:login')
 def update_status_pembayaran(request, idKelas, idForm):
@@ -64,3 +60,4 @@ def update_status_pembayaran(request, idKelas, idForm):
     response = kelas_func.update_status(request, form, mentee, kelas, status_konfirmasi)
     
     return response
+    
