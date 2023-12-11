@@ -51,7 +51,7 @@
                                 <div class="self-stretch h-[150px] justify-start items-start inline-flex">
                                     <img src="https://picsum.photos/seed/simentor{{ card_kelas.judul_kelas }}/150">
                                 </div>
-                                <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex">
+                                <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex overflow-hidden hover:overflow-auto">
                                     <div
                                         class="self-stretch h-4 text-black text-base font-medium font-sans leading-normal">
                                         {{ card_kelas.judul_kelas }}</div>
@@ -168,7 +168,7 @@
                                 <div class="self-stretch h-[150px] justify-start items-start inline-flex">
                                     <img src="https://picsum.photos/seed/simentor{{ card_kelas.judul_kelas }}/150">
                                 </div>
-                                <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex">
+                                <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex overflow-hidden hover:overflow-auto">
                                     <div
                                         class="self-stretch h-4 text-black text-base font-medium font-sans leading-normal">
                                         {{ card_kelas.judul_kelas }}</div>
@@ -241,6 +241,7 @@
                                         Current student: {{ card_kelas.jumlah_mentee }} /
                                         {{ card_kelas.kapasitas_maksimal }}</div>
                                     <div class="self-stretch p-2 flex justify-center items-center">
+                                    
                                     </div>
                                 </div>
                             </div>
@@ -287,12 +288,17 @@
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
+                {% endif %}
 
+            </div>
+        </div>
+        {% if is_mentee %}
+            <a href="{% url 'review:classes_followed' %}" class="bg-black rounded-[54px] px-3 py-2 drop-shadow-xl text-center text-white font-medium font-sans">
+                My Review
+            </a>
+        {% endif %}
         {% endif %}
     </div>
 
@@ -400,17 +406,11 @@
 
         });
 
-        // Close the modal when clicking outside the modal content for user's classes
-        userModal.addEventListener("click", function (event) {
-            if (event.target === userModal) {
-                userModal.classList.remove("flex");
-                userModal.classList.add("hidden");
+        </div>
+    </div>
+</div>
+</div>
 
-            }
-        });
-        {% endfor %}
-    });
-</script>
 
 
 {% endblock %}

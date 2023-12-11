@@ -1,13 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Tinjau Materi</h1>
-    
-    <form method="post" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Simpan Tinjauan</button>
-    </form>
-    
-    <a href="{% url 'adminreview:pengelolaan_materi' %}">Kembali ke Daftar Materi</a>
+    <div class="my-8">
+        <h2 class="text-xl font-semibold mb-4">Class Description</h2>
+        
+        <div class="border border-black rounded-md p-4">
+            <p class="text-lg"><span class="font-semibold">Class Name:</span> {{ kelas.judul_kelas }}</p>
+            <p class="text-lg"><span class="font-semibold">Date:</span> {{ kelas.tanggal_kelas }}</p>
+            <p class="text-lg"><span class="font-semibold">Price:</span> {{ kelas.harga_kelas }}</p>
+            <p class="text-lg"><span class="font-semibold">Mentor:</span> {{ kelas.mentor_kelas.user.username }}</p>
+            <p class="text-lg"><span class="font-semibold">Max Capacity:</span> {{ kelas.kapasitas_maksimal }}</p>
+            <p class="text-lg"><span class="font-semibold">No. of Mentee:</span> {{ kelas.jumlah_mentee }}</p>
+        </div>
+
+        {% if materi_list %}
+            <h2 class="text-xl font-semibold mb-4 mt-8">Material List</h2>
+            <ul>
+                {% for materi in materi_list %}
+                    <li>
+                        <p class="text-lg"><span class="font-semibold">Material Title:</span> {{ materi.judul_materi }}</p>
+                        <p class="text-lg"><span class="font-semibold">Status:</span> {{ materi.status_persetujuan }}</p>
+                    </li>
+                    <a href="{% url 'adminreview:persetujuan_materi' materi.id%}" class="block mt-4 bg-black text-white px-4 py-2 rounded-full text-center text-decoration-none hover:bg-gray-800 focus:outline-none focus:shadow-outline-gray active:bg-gray-800">
+                        Manage Materials:
+                    </a>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-lg mt-8">No materials available for this class.</p>
+        {% endif %}      
+
+    </div>
 {% endblock %}

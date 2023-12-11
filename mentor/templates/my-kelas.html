@@ -29,10 +29,15 @@
                 onclick="window.location.href='{% url 'mentor:bukti_pembayaran' idKelas=kelas.id %}'">
                 Konfirmasi
         </button>
+
         </div>
-        {% endfor %}
+        <div class="text-black text-xs font-normal font-sans leading-none">Current student: {{ kelas.jumlah_mentee }} / {{ kelas.kapasitas_maksimal }}</div>
     </div>
 </div>
+
+    {% endfor %}
+</div>
+
 <a class='fixed bottom-4 right-4 bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300'
     href="{% url 'mentor:create_kelas' %}">Add Kelas</a>
 
