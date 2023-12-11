@@ -61,7 +61,7 @@ def add_bukti_pembayaran(request, idForm):
             form_pendaftaran.url_bukti_pembayaran = form.cleaned_data.get('url_bukti_pembayaran')
             form_pendaftaran.status_pembayaran = 'Menunggu Konfirmasi'
             form_pendaftaran.save()
-            return redirect(f'mentee:form_by_id', idForm=idForm)
+            return redirect(f'mentee:form_pendaftaran')
     else:
         form = PembayaranForm()
 

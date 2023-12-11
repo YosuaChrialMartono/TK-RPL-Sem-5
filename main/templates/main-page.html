@@ -3,6 +3,7 @@
 {% block title %}SiMentor{% endblock %}
 
 {% block content %}
+{% csrf_token %}
 <div class="w-full flex justify-center my-4" id="main-page">
     <div class="w-full h-[657px] flex-col items-center gap-[30px] inline-flex">
         <div class="flex-col justify-start items-center gap-[31px] flex">
@@ -297,6 +298,8 @@
 </div>
 </div>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     function toggleModal(modalId) {
         const modal = document.getElementById(modalId);
@@ -306,7 +309,27 @@
 
     function join(event, url) {
         event.stopPropagation();
-        window.location.href = url;
+        var csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        $(document).ready(function(){
+            $.ajax({
+                type: 'POST',
+                url: url,
+                headers: { "X-CSRFToken": csrfToken },
+                encode: true,
+                success: function(data){
+                    console.log(data)
+                },
+                error: function(xhr, textStatus, errorThrown){
+                    if (xhr.status == 409) {
+                        console.error("Bad Request:", xhr.responseText);
+                    } else if (xhr.status == 404) {
+                        console.error("Not Found:", errorThrown);
+                    } else {
+                        console.error("Error:", errorThrown);
+                    }
+                }
+            })
+        })
     }
 
     document.addEventListener("DOMContentLoaded", function () {

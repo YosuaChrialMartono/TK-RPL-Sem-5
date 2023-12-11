@@ -95,7 +95,15 @@
         <a href="{% url 'UserProfile:view_profile' username=request.user.username %}"
           class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Hey,
           {{ request.user.username }}</a>
+
+          {% if user.role == '2' %}
+          <a href="{% url 'mentee:form_pendaftaran' %}"
+            class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">
+            Form Daftar</a>
+          <!-- masukkan link daftar kelas -->
+          {% endif %}
       </div>
+
       <div class="w-[200px] justify-end items-center gap-2 flex">
 
         <a href="{% url 'authuser:logout' %}"
