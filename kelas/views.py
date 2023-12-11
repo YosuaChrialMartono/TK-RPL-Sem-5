@@ -7,6 +7,10 @@ from mentor.models import Mentor
 from mentee.decorators import mentee_required
 from mentor.decorators import mentor_required
 
+def get_kelas_by_id_func(request, idKelas):
+    kelas = get_
+    pass
+
 def get_all_kelas(request):
     judul_kelas = request.GET.get('kelas', '')
     mentor = request.GET.get('mentor', '')
