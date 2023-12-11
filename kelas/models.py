@@ -9,7 +9,7 @@ class Kelas(models.Model):
     mentor_kelas = models.ForeignKey(Mentor, on_delete=models.CASCADE)
     kapasitas_maksimal = models.IntegerField(default=1)
     jumlah_mentee = models.IntegerField(default=0)
-    mentee_kelas = models.ManyToManyField(Mentee, related_name='kelas_diikuti', blank=True)
+    mentee_kelas = models.ManyToManyField(Mentee, related_name='kelas_diikuti', blank=True, default=None)
 
 class FormJoinKelas(models.Model):
     pendaftar = models.ForeignKey(Mentee, on_delete=models.CASCADE)
