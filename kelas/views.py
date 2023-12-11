@@ -155,6 +155,19 @@ def filter_kelas_by_mentor(username_mentor):
     
     return kelas_list
 
+def filter_kelas_diikuti(mentee_user):
+    mentee = mentee_user.mentee
+
+    kelass = all_kelas()
+    kelas_diikuti = []
+
+    for kelas in kelass:
+        mentees_in_class = kelas.mentee_kelas.all()
+        if mentee in mentees_in_class:
+            kelas_diikuti.append(kelas)
+
+    return kelas_diikuti
+
 def filter_form_by_id(id):
     try:
         form = FormJoinKelas.objects.get(id=id)
