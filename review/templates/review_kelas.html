@@ -1,36 +1,133 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="my-4">
-        <h1 class="text-4xl font-semibold mb-2">Review Kelas</h1>
-
-        <ul>
-            {% for kelas in kelas_diikuti %}
-                <li class="mb-2">
-                    <strong>{{ kelas.judul_kelas }}</strong> - {{ kelas.mentor_kelas.user.username }}<br>
-                    {% with review=reviews|filter(kelas=kelas)|first %}
-                        {% if review %}
-                            <strong>Rating:</strong> {{ review.rating }} - <strong>Comment:</strong> {{ review.comment }}
-                        {% else %}
-                            <em>Belum diulas</em>
-                        {% endif %}
-                    {% endwith %}
-                </li>
-            {% endfor %}
-        </ul>
-
-        <h2 class="text-2xl font-semibold mt-4">Add Review</h2>
-        <form method="post" action="">
-            {% csrf_token %}
-            <div class="mb-4">
-                <label for="id_rating" class="block text-sm font-medium text-gray-700">Rating:</label>
-                {{ form.rating }}
+    <div class="w-full flex justify-center my-4">
+        <div class="p-2.5 flex-col justify-start items-start gap-2.5 flex">
+            <div class="flex-col justify-start items-start gap-1 flex">
+                <div class="flex-col justify-start items-start gap-1.5 flex">
+                    <div class="text-black text-xl font-medium font-sans leading-normal">Your Review</div>
+                </div>
+                <div class="flex-row justify-start items-start gap-2.5 flex">
+                    {% if kelas_diikuti %}
+                        {% for kelas in kelas_diikuti %}
+                            <div class="px-3 py-[7px] rounded flex-col justify-center items-center gap-2 flex">
+                                <div class="self-stretch justify-start items-start gap-2 inline-flex">
+                                    <div class="w-[150px] rounded-md border border-black border-opacity-10 flex-col justify-start items-center inline-flex">
+                                        <div class="self-stretch h-[150px] justify-start items-start inline-flex">
+                                            <img src="https://picsum.photos/seed/simentor{{ kelas.judul_kelas }}/150">
+                                        </div>
+                                        <div class="self-stretch p-2 flex-col justify-start items-start gap-1 flex">
+                                            <div class="self-stretch h-4 text-black text-base font-medium font-sans leading-normal">
+                                                {{ kelas.judul_kelas }}</div>
+                                            <div class="self-stretch text-black text-xs font-medium font-sans leading-normal">
+                                                oleh {{ kelas.mentor_kelas.user.username }}</div>
+                                            <div class="self-stretch text-black text-xs font-normal font-sans leading-none">
+                                                {{ kelas.tanggal_kelas }}</div>
+                                                <button class="review-btn" data-kelasid="{{ kelas.id }}" onclick="openModal()">Review</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No Classes Reviewed Yet</p>
+                    {% endif %}
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_comment" class="block text-sm font-medium text-gray-700">Comment:</label>
-                {{ form.comment }}
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700">Add Review</button>
-        </form>
+        </div>
     </div>
+    <div id="reviewModal" class="fixed inset-0 z-50 hidden overflow-auto bg-gray-800 bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white p-6 rounded-lg w-full max-w-md text-center">
+                <!-- Your modal content goes here -->
+                <h2 class="text-2xl font-bold mb-4">Review Class</h2>
+                <form method="post" action="{% url 'review:review_kelas' %}" class="space-y-4" onsubmit="return validateForm()">
+                    {% csrf_token %}
+                    <!-- Rating Field -->
+                    <div class="flex items-center space-x-4">
+                        <label for="rating" class="text-sm font-semibold">Rating:</label>
+                        <input type="number" name="rating" id="rating" min="1" max="5" required>
+                    </div>
+                    <!-- Review Text Area -->
+                    <div class="flex items-center space-x-4">
+                        <label for="review" class="text-sm font-semibold">Review:</label>
+                        <textarea name="review" id="review" rows="4" required></textarea>
+                    </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700">
+                        Submit Review
+                    </button>
+                </form>
+                <!-- End of your modal content -->
+                <span class="absolute top-4 right-4 cursor-pointer text-gray-700" onclick="closeModal()">×</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="successModal" class="fixed inset-0 z-50 hidden overflow-auto bg-gray-800 bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white p-6 rounded-lg w-full max-w-md text-center">
+                <!-- Success modal content goes here -->
+                <h2 class="text-2xl font-bold mb-4">Review Submitted Successfully</h2>
+                <p>Your review has been submitted successfully!</p>
+                <!-- Close all modals -->
+                <button onclick="closeAllModals()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 mt-4">
+                    Close
+                </button>
+                <!-- End of success modal content -->
+                <span class="absolute top-4 right-4 cursor-pointer text-gray-700" onclick="closeAllModals()">×</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="failedModal" class="fixed inset-0 z-50 hidden overflow-auto bg-gray-800 bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white p-6 rounded-lg w-full max-w-md text-center">
+                <!-- Failed modal content goes here -->
+                <h2 class="text-2xl font-bold mb-4">Review Submission Failed</h2>
+                <p>Please fill in both the rating and review fields.</p>
+                <!-- Close button -->
+                <button onclick="closeModal('failedModal')" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 mt-4">
+                    Close
+                </button>
+                <!-- End of failed modal content -->
+                <span class="absolute top-4 right-4 cursor-pointer text-gray-700" onclick="closeModal('failedModal')">×</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function openModal() {
+            document.getElementById('reviewModal').style.display = 'block';
+        }
+    
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    
+        function closeAllModals() {
+            document.getElementById('reviewModal').style.display = 'none';
+            document.getElementById('successModal').style.display = 'none';
+            document.getElementById('failedModal').style.display = 'none';
+        }
+    
+        function validateForm() {
+            // Validate fields before submission
+            var rating = document.getElementById('rating').value;
+            var review = document.getElementById('review').value;
+    
+            if (rating === '' || review === '' || rating.trim() === '' || review.trim() === '') {
+                // Show failedModal for empty or blank input
+                document.getElementById('failedModal').style.display = 'block';
+                return false; // Prevent form submission
+            }
+    
+            // If validation passes, show the success modal
+            document.getElementById('successModal').style.display = 'block';
+    
+            // Prevent the default form submission
+            return false;
+        }
+    </script>
+    
 {% endblock %}
