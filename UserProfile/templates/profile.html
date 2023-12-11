@@ -55,15 +55,15 @@
       {% if friend_requests %}
       {% for friend_request in friend_requests %}
       <div
-        class="w-[336px] px-3 py-2 rounded-md border border-black border-opacity-50 justify-start items-center gap-2.5 inline-flex">
-        <div class="grow shrink basis-0 h-5 text-black text-sm font-normal font-sans leading-tight">{{
-          friend_request.user }}</div>
-        <div class="grow shrink basis-0 h-5 text-black text-sm font-normal font-sans leading-tight">{{
-          friend_request.message }}</div>
+        class="px-3 py-2 rounded-md border border-black border-opacity-50 justify-start items-center gap-2.5 inline-flex">
+        <div class="font-bold grow shrink basis-0 h-5 text-black text-sm font-sans leading-tight">
+          {{ friend_request.user }}</div>
+        <div class="w-[200px] text-black text-sm font-normal font-sans leading-tight overflow-scroll">
+          {{ friend_request.message }}</div>
         <a href="{% url 'UserProfile:accept_friend_request' username=friend_request.user %}"
-          class="bg-[#FFD600] text-black text-opacity-50 font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Accept</a>
+          class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Accept</a>
         <a href="{% url 'UserProfile:reject_friend_request' username=friend_request.user %}"
-          class="bg-[#FFD600] text-black text-opacity-50 font-medium font-sans leading-normal px-[25px] py-[10px] rounded-[10px]">Reject</a>
+          class="bg-gray-800 text-white text-2xl font-medium font-sans leading-normal px-[25px] py-[10px] rounded-full text-sm hover:shadow-gray-90 hover:bg-gray-900 hover:shadow-xl focus:outline-none  focus:ring-4 focus:ring-gray-300">Reject</a>
       </div>
       {% endfor %}
       {% else %}
