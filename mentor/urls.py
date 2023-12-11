@@ -11,4 +11,5 @@ urlpatterns = [
     path('my-kelas/<str:idKelas>/form', get_form_by_kelas, name='all_form_kelas'),
     path('my-kelas/<str:idKelas>/form/<str:idForm>', get_form_by_id, name='get_form_id'),
     path('my-kelas/<str:idKelas>/form/<str:idForm>/update', views.update_status_pembayaran, name='update_status_pembayaran'),
+    path('my-kelas/<str:idKelas>/bukti-pembayaran', views.show_bukti_pembayaran, name='bukti_pembayaran'),
 ]

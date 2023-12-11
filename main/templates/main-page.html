@@ -135,7 +135,7 @@
                                 </p>
                                 {% for mentee in card_kelas.mentee_kelas.all %}
                                 <div class="">
-                                    <a href="{% url 'UserProfile:view_profile' username=request.user.username %}"
+                                    <a href="{% url 'UserProfile:view_profile' username=mentee.user.username %}"
                                         class="text-white text-md font-medium font-sans leading-normal py-[10px] rounded-full hover:shadow-gray-70 hover:bg-gray-900 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-gray-300 transition duration-300 ease-in-out transform hover:scale-105">
                                         {{ mentee.user.username }}
                                     </a>
