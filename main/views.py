@@ -31,4 +31,7 @@ def main_page(request):
             return render(request, 'main-page.html', context)
         return render(request, 'main-page.html', context)
     else:
-        return render(request, 'main-page.html')
+        context = {
+            'kelas' : kelas
+        }
+        return render(request, 'main-page.html', context)
