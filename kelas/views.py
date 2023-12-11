@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse, JsonResponse
 from django.core.serializers import serialize
 from .models import Kelas, FormJoinKelas
@@ -6,6 +8,16 @@ from mentee.models import Mentee
 from mentor.models import Mentor
 from mentee.decorators import mentee_required
 from mentor.decorators import mentor_required
+import json
+
+def get_kelas_by_id_func(request, idKelas):
+    kelas = get_kelas_by_id(idKelas)
+    kelas_data = serialize('json', [kelas])
+    kelas_data = json.loads(kelas_data)
+    kelas_data[0]['fields']['mentee_kelas'] = kelas.get_mentee_usernames()
+    kelas_data = json.dumps(kelas_data)
+    # kelas_data[0]['fields']['mentor_kelas'] = kelas.get_mentee_usernames()
+    return JsonResponse(kelas_data, safe=False)
 
 def get_all_kelas(request):
     judul_kelas = request.GET.get('kelas', '')
@@ -143,6 +155,19 @@ def filter_kelas_by_mentor(username_mentor):
     kelas_list = Kelas.objects.filter(mentor_kelas=mentor)
     
     return kelas_list
+
+def filter_kelas_diikuti(mentee_user):
+    mentee = mentee_user.mentee
+
+    kelass = all_kelas()
+    kelas_diikuti = []
+
+    for kelas in kelass:
+        mentees_in_class = kelas.mentee_kelas.all()
+        if mentee in mentees_in_class:
+            kelas_diikuti.append(kelas)
+
+    return kelas_diikuti
 
 def filter_form_by_id(id):
     try:

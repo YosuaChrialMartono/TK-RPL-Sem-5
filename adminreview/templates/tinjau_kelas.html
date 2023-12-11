@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for kelas in list_kelas %}
+        <div class="my-8 flex justify-center items-center">
+            <div class="text-center">
+                <h2 class="text-xl font-semibold mb-4">Class Description</h2>
+                
+                <div class="border border-black rounded-md p-4">
+                    <p class="text-lg"><span class="font-semibold">Class Name:</span> {{ kelas.judul_kelas }}</p>
+                    <p class="text-lg"><span class="font-semibold">Date:</span> {{ kelas.tanggal_kelas }}</p>
+                    <p class="text-lg"><span class="font-semibold">Price:</span> {{ kelas.harga_kelas }}</p>
+                    <p class="text-lg"><span class="font-semibold">Mentor:</span> {{ kelas.mentor_kelas.user.username }}</p>
+                    <p class="text-lg"><span class="font-semibold">Max Capacity:</span> {{ kelas.kapasitas_maksimal }}</p>
+                    <p class="text-lg"><span class="font-semibold">No. of Mentee:</span> {{ kelas.jumlah_mentee }}</p>
+                </div>
+                <a href="{% url 'adminreview:tinjau_materi' kelas.id %}" class="block mt-4 bg-black text-white px-4 py-2 rounded-full text-center text-decoration-none hover:bg-gray-800 focus:outline-none focus:shadow-outline-gray active:bg-gray-800">
+                    See Material Detail
+                </a>
+                <a href="{% url 'adminreview:pengelolaan_materi' %}" class="block mt-4 bg-black text-white px-4 py-2 rounded-full text-center text-decoration-none hover:bg-gray-800 focus:outline-none focus:shadow-outline-gray active:bg-gray-800">
+                    Back to List Class
+                </a>
+                
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
